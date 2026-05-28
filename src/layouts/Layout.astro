@@ -1,23 +1,434 @@
+---
+import '@fontsource-variable/manrope';
+import '../styles/global.css';
+import SiteFooter from '../components/SiteFooter.astro';
+import { siteConfig } from '../config/site';
+
+const {
+	title = siteConfig.title,
+	description = siteConfig.description,
+	showFooterCta = true,
+	noindex = false,
+	schema,
+} = Astro.props;
+
+const canonicalUrl = new URL(Astro.url.pathname, siteConfig.siteUrl).toString();
+const ogImageUrl = new URL(siteConfig.ogImage, siteConfig.siteUrl).toString();
+const schemaData =
+	schema ??
+	[
+		{
+			'@context': 'https://schema.org',
+			'@type': 'WebSite',
+			name: siteConfig.name,
+			url: siteConfig.siteUrl,
+			description: siteConfig.description,
+			inLanguage: siteConfig.locale,
+		},
+		{
+			'@context': 'https://schema.org',
+			'@type': 'Person',
+			name: siteConfig.authorName,
+			jobTitle: siteConfig.authorRole,
+			url: siteConfig.siteUrl,
+			email: siteConfig.email,
+		},
+	];
+---
+
 <!doctype html>
-<html lang="en">
+<html lang={siteConfig.locale}>
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<meta name="description" content={description} />
+		<meta name="keywords" content={siteConfig.keywords.join(', ')} />
+		<meta name="author" content={siteConfig.authorName} />
+		<meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow'} />
+		<link rel="canonical" href={canonicalUrl} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={canonicalUrl} />
+		<meta property="og:site_name" content={siteConfig.name} />
+		<meta property="og:locale" content={siteConfig.locale.replace('-', '_')} />
+		<meta property="og:image" content={ogImageUrl} />
+		<meta property="og:image:alt" content={siteConfig.title} />
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={ogImageUrl} />
+		<title>{title}</title>
+		<script type="application/ld+json" set:html={JSON.stringify(schemaData)}></script>
 	</head>
 	<body>
 		<slot />
+		<SiteFooter showCta={showFooterCta} />
 	</body>
 </html>
 
-<style>
-	html,
+<style is:global>
+	:root {
+		--background: #ffffff;
+		--foreground: #171717;
+		--muted: #f7f7f7;
+		--muted-foreground: #676767;
+		--border: #d9d9d9;
+		--border-strong: #232323;
+		--card: #ffffff;
+		--card-foreground: #171717;
+		--ring: #171717;
+		--font-sans: 'Manrope Variable', 'Inter', 'Segoe UI', sans-serif;
+		--container: 72rem;
+	}
+
+	* {
+		box-sizing: border-box;
+	}
+
+	html {
+		scroll-behavior: smooth;
+	}
+
 	body {
 		margin: 0;
+		min-width: 320px;
+		min-height: 100vh;
+		font-family: var(--font-sans);
+		color: var(--foreground);
+		background-color: var(--background);
+	}
+
+	a {
+		color: inherit;
+	}
+
+	img {
+		display: block;
+		max-width: 100%;
+	}
+
+	button,
+	input,
+	textarea {
+		font: inherit;
+	}
+
+	button {
+		background: none;
+		border: 0;
+		padding: 0;
+	}
+
+	:focus-visible {
+		outline: 3px solid var(--ring);
+		outline-offset: 3px;
+	}
+
+	::selection {
+		background: #dcff68;
+		color: var(--foreground);
+	}
+
+	.skip-link {
+		position: absolute;
+		left: 1rem;
+		top: 1rem;
+		z-index: 100;
+		padding: 0.75rem 1rem;
+		background: var(--foreground);
+		color: var(--background);
+		text-decoration: none;
+		transform: translateY(-160%);
+		transition: transform 100ms linear;
+		border-radius: 999px;
+	}
+
+	.skip-link:focus-visible {
+		transform: translateY(0);
+	}
+
+	.shared-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding-top: 0.25rem;
+	}
+
+	.shared-brand {
+		display: inline-flex;
+		align-items: center;
+		min-height: 44px;
+		text-decoration: none;
+	}
+
+	.shared-brand-mark {
+		font-size: 1.3rem;
+		font-weight: 800;
+		letter-spacing: -0.04em;
+	}
+
+	.shared-nav {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 2rem;
+	}
+
+	.shared-nav a {
+		min-height: 44px;
+		display: inline-flex;
+		align-items: center;
+		font-size: 0.95rem;
+		font-weight: 600;
+		letter-spacing: -0.02em;
+		text-decoration: none;
+	}
+
+	.shared-menu {
+		position: relative;
+		padding-bottom: 0.45rem;
+		margin-bottom: -0.45rem;
+	}
+
+	.shared-menu-trigger {
+		min-height: 44px;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
+		cursor: default;
+		padding: 0;
+		font-size: 0.95rem;
+		font-weight: 600;
+		letter-spacing: -0.02em;
+		color: var(--foreground);
+		text-decoration: none;
+		transition: opacity 120ms ease;
+	}
+
+	.shared-menu-trigger img {
+		transition: transform 140ms ease;
+	}
+
+	.shared-menu:hover .shared-menu-trigger img,
+	.shared-menu:focus-within .shared-menu-trigger img {
+		transform: rotate(180deg);
+	}
+
+	.shared-nav a:hover,
+	.shared-nav a:focus-visible,
+	.shared-menu-trigger:hover,
+	.shared-menu-trigger:focus-visible {
+		opacity: 0.68;
+		outline: none;
+	}
+
+	.shared-menu-panel {
+		position: absolute;
+		top: calc(100% - 0.1rem);
+		right: 0;
+		min-width: 15rem;
+		padding: 0.55rem;
+		display: none;
+		gap: 0.15rem;
+		background: var(--background);
+		border: 1px solid var(--border);
+		border-radius: 0.9rem;
+		box-shadow: 0 18px 36px rgba(23, 23, 23, 0.08);
+		z-index: 20;
+	}
+
+	.shared-menu:hover .shared-menu-panel,
+	.shared-menu:focus-within .shared-menu-panel {
+		display: grid;
+	}
+
+	.shared-menu-panel a {
+		min-height: 40px;
+		display: flex;
+		align-items: center;
+		padding: 0.4rem 0.6rem;
+		border-radius: 0.65rem;
+		font-size: 0.95rem;
+		font-weight: 600;
+		text-decoration: none;
+		transition: background-color 120ms ease;
+	}
+
+	.shared-menu-panel a:hover,
+	.shared-menu-panel a:focus-visible {
+		background: var(--muted);
+		text-decoration: none;
+		outline: none;
+	}
+
+	.display-title {
 		width: 100%;
-		height: 100%;
+		max-width: none;
+		margin: 1rem 0 0;
+		font-size: clamp(3rem, 4.8vw, 5rem);
+		line-height: 1.02;
+		letter-spacing: -0.05em;
+		font-weight: 800;
+		color: var(--foreground);
+	}
+
+	.shared-footer {
+		padding: 0 0 3rem;
+	}
+
+	.shared-footer-inner {
+		width: min(calc(100% - 3rem), 78rem);
+		margin: 0 auto;
+		padding-top: 3rem;
+		border-top: 1px solid var(--border);
+	}
+
+	.shared-footer-cta h2 {
+		margin: 0;
+		font-size: clamp(1.7rem, 3vw, 2.4rem);
+		line-height: 1.08;
+		letter-spacing: -0.04em;
+	}
+
+	.shared-footer-cta p,
+	.shared-footer-cta a,
+	.shared-footer-meta p,
+	.shared-footer-links a {
+		font-size: 1rem;
+		line-height: 1.7;
+	}
+
+	.shared-footer-cta p {
+		max-width: none;
+		margin: 1rem 0 0;
+		color: var(--muted-foreground);
+	}
+
+	.shared-footer-cta a {
+		display: inline-block;
+		margin-top: 0.75rem;
+		color: #5869d8;
+		text-decoration: none;
+	}
+
+	.shared-footer-cta .shared-footer-inline-link {
+		display: inline;
+		margin-top: 0;
+		color: inherit;
+		font-weight: 700;
+	}
+
+	.shared-footer-cta a:hover,
+	.shared-footer-cta a:focus-visible,
+	.shared-footer-links a:hover,
+	.shared-footer-links a:focus-visible {
+		text-decoration: underline;
+		outline: none;
+	}
+
+	.shared-footer-meta {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		margin-top: 2rem;
+		padding-top: 1rem;
+		border-top: 1px solid var(--border);
+	}
+
+	.shared-footer-inner-no-cta .shared-footer-meta {
+		margin-top: 0;
+		padding-top: 0;
+		border-top: 0;
+	}
+
+	.shared-footer-meta p {
+		margin: 0;
+		color: var(--muted-foreground);
+	}
+
+	.shared-footer-note {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: flex-end;
+		gap: 0.5rem 1rem;
+	}
+
+	.shared-footer-links {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1rem;
+	}
+
+	.shared-footer-links a {
+		color: var(--foreground);
+		text-decoration: none;
+	}
+
+	.shared-footer-legal {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+	}
+
+	.shared-footer-legal a {
+		color: var(--muted-foreground);
+		text-decoration: none;
+	}
+
+	.shared-footer-legal a:hover,
+	.shared-footer-legal a:focus-visible {
+		text-decoration: underline;
+		outline: none;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		html {
+			scroll-behavior: auto;
+		}
+
+		*,
+		*::before,
+		*::after {
+			animation: none !important;
+			transition-duration: 0ms !important;
+		}
+	}
+
+	@media (max-width: 720px) {
+		.display-title {
+			font-size: clamp(2.4rem, 10vw, 3.4rem);
+		}
+
+		.shared-header {
+			gap: 1rem;
+			flex-direction: column;
+			align-items: flex-start;
+		}
+
+		.shared-nav {
+			gap: 1rem;
+		}
+
+		.shared-menu-panel {
+			left: 0;
+			right: auto;
+		}
+
+		.shared-footer-inner {
+			width: min(calc(100% - 1.5rem), 78rem);
+		}
+
+		.shared-footer-meta {
+			flex-direction: column;
+			align-items: flex-start;
+		}
+
+		.shared-footer-note {
+			justify-content: flex-start;
+		}
 	}
 </style>

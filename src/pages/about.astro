@@ -1,0 +1,176 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+---
+
+<Layout title="About | Alba Studio" description="About page for a UX designer portfolio.">
+	<a class="skip-link" href="#main-content">Skip to content</a>
+
+	<div class="page">
+		<SiteHeader />
+
+		<main id="main-content">
+			<section class="hero">
+				<p class="eyebrow">About</p>
+				<h1 class="display-title">I design products that make complicated things feel clearer, calmer, and easier to use.</h1>
+				<div class="hero-subgrid">
+					<p class="hero-text">
+						I'm Andrei Alba, a UX designer focused on turning dense workflows, fuzzy product
+						requirements, and overloaded interfaces into experiences that people can actually
+						navigate with confidence.
+					</p>
+					<p class="hero-note">
+						My work tends to live where complexity matters: dashboards, internal tools, service
+						platforms, and products where clarity directly affects trust.
+					</p>
+				</div>
+			</section>
+
+			<section class="editorial-section">
+				<div class="section-rail">
+					<p class="section-kicker">Background</p>
+				</div>
+				<div class="story-block">
+					<p>
+						Over the last 10+ years, I've worked across SaaS, operations, service platforms,
+						and internal tools where the design challenge is rarely just about making something
+						look good. More often, it's about helping people understand what matters, what to
+						do next, and why the product should feel trustworthy in the first place.
+					</p>
+					<p>
+						I sit somewhere between product thinking, systems design, and interface craft. I
+						care about hierarchy, pacing, micro-decisions, and the kind of details that make
+						an experience feel intentional rather than merely complete.
+					</p>
+				</div>
+			</section>
+
+			<section class="editorial-section">
+				<div class="section-rail">
+					<p class="section-kicker">How I Work</p>
+				</div>
+				<div class="story-block">
+					<p>
+						I work best in the messy middle: when the requirements are incomplete, the product
+						has started to sprawl, and the team needs someone to create clarity without
+						oversimplifying the problem.
+					</p>
+					<p>
+						That usually means stepping back to understand the structure of the experience,
+						deciding what deserves attention first, and then building a visual system strong
+						enough to support that logic all the way through the final UI.
+					</p>
+				</div>
+			</section>
+
+			<section class="editorial-section">
+				<div class="section-rail">
+					<p class="section-kicker">Focus</p>
+				</div>
+				<div class="story-block">
+					<p>
+						I'm especially interested in dashboards, workflow tools, AI-assisted interfaces,
+						and products where reducing friction has a measurable impact on how confident people
+						feel using the system.
+					</p>
+					<p>
+						If something is too dense, too noisy, or too hard to follow, that's usually where I
+						can do my best work.
+					</p>
+				</div>
+			</section>
+		</main>
+	</div>
+</Layout>
+
+<style>
+	.page {
+		position: relative;
+		width: min(calc(100% - 3rem), 78rem);
+		margin: 0 auto;
+		padding: 1.25rem 0 5rem;
+	}
+
+	.eyebrow,
+	.section-kicker {
+		font-size: 0.95rem;
+		font-weight: 600;
+		letter-spacing: -0.02em;
+	}
+
+	.hero {
+		padding: 6rem 0 4rem;
+	}
+
+	.eyebrow,
+	.section-kicker {
+		margin: 0;
+		color: var(--muted-foreground);
+		font-style: italic;
+		font-weight: 500;
+	}
+
+	.hero-subgrid {
+		display: grid;
+		grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.7fr);
+		gap: 2rem;
+		margin-top: 1.75rem;
+	}
+
+	.hero-text,
+	.hero-note,
+	.story-block p {
+		font-size: 1.08rem;
+		line-height: 1.7;
+		margin: 0;
+	}
+
+	.hero-note {
+		color: var(--muted-foreground);
+	}
+
+	.editorial-section {
+		display: grid;
+		grid-template-columns: 16rem minmax(0, 1fr);
+		gap: 2rem;
+		padding: 2.5rem 0;
+		border-top: 1px solid var(--border);
+	}
+
+	.section-rail {
+		align-self: start;
+	}
+
+	.story-block {
+		display: grid;
+		gap: 1rem;
+		max-width: 52rem;
+	}
+
+	@media (max-width: 980px) {
+		.hero-subgrid {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	@media (max-width: 720px) {
+		.page {
+			width: min(calc(100% - 1.5rem), 78rem);
+			padding-top: 1rem;
+		}
+
+		.hero {
+			padding: 4rem 0 3rem;
+		}
+
+		.editorial-section {
+			grid-template-columns: 1fr;
+		}
+
+		.hero-text,
+		.hero-note,
+		.story-block p {
+			font-size: 1.05rem;
+		}
+	}
+</style>

@@ -1,11 +1,541 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const projects = [
+	{
+		name: 'Nextpoint',
+		title: 'Making legal transcripts easier to scan, summarize, and act on with AI',
+		background: 'lime',
+		variant: 'desktop',
+		href: '/work/nextpoint',
+		image: '/nextpoint.webp',
+		alt: 'Nextpoint dashboard preview showing transcript and summary metrics',
+		imageClass: 'project-preview-image',
+	},
+	{
+		name: 'b.combs',
+		title: 'A CRM designed around people, relationships, and the work behind the data',
+		background: 'cyan',
+		variant: 'split',
+		href: '/work/nextpoint',
+		image: '/bcombs.webp',
+		alt: 'b.combs CRM preview showing nonprofit workflow screens',
+		imageClass: 'project-preview-image',
+	},
+	{
+		name: 'Nestara',
+		title: 'Helping first-time buyers feel guided through a high-stress life decision',
+		background: 'lavender',
+		variant: 'mobile',
+		href: '/work/nextpoint',
+		image: '/nestara.webp',
+		alt: 'Nestara mobile app preview showing real estate product screens',
+		imageClass: 'project-preview-image',
+	},
+	{
+		name: 'BoardSpeak',
+		title: 'Turning community participation into a clearer and more sustainable growth loop',
+		background: 'mint',
+		variant: 'board',
+		href: '/work/nextpoint',
+		image: '/boardspeak.webp',
+		alt: 'BoardSpeak web app preview showing rewards and community interface',
+		imageClass: 'project-preview-image',
+	},
+];
 ---
 
-<Layout>
-	<Welcome />
+<Layout
+	title="Alba Studio | UX Designer Portfolio"
+	description="A modern portfolio homepage for a UX designer with a simple intro and selected work."
+>
+	<a class="skip-link" href="#main-content">Skip to content</a>
+
+	<div class="page">
+		<SiteHeader />
+
+		<main id="main-content">
+			<section class="hero" id="top">
+				<div class="hero-copy">
+					<h1 class="display-title">Hi, I'm Andrei Alba. I design digital products that actually make sense.</h1>
+					<p class="hero-text">
+						Ten-plus years helping teams turn messy problems into clear, useful experiences.
+						Corporations, startups, scrappy independents: if there's a user confused
+						somewhere, I want to fix that.
+					</p>
+					<p class="hero-note" id="about">
+						I work best in the messy middle - where requirements are fuzzy, stakes are real,
+						and good design actually matters.
+					</p>
+				</div>
+			</section>
+
+			<section class="projects" id="work">
+				<div class="projects-grid">
+					{
+						projects.map((project) => (
+							<a class="project-link" href={project.href}>
+								<article class={`project-card ${project.background}`}>
+									<div class="project-header">
+										<p class="project-name">{project.name}</p>
+									</div>
+									<h2 class="project-title">{project.title}</h2>
+
+									<div class={`project-visual ${project.variant}`}>
+										{project.variant === 'desktop' && (
+											<img
+												class={project.imageClass}
+												src={project.image}
+												alt={project.alt}
+												loading="lazy"
+												decoding="async"
+											/>
+										)}
+
+										{project.variant === 'split' && (
+											<img
+												class={project.imageClass}
+												src={project.image}
+												alt={project.alt}
+												loading="lazy"
+												decoding="async"
+											/>
+										)}
+
+										{project.variant === 'mobile' && (
+											<img
+												class={project.imageClass}
+												src={project.image}
+												alt={project.alt}
+												loading="lazy"
+												decoding="async"
+											/>
+										)}
+
+										{project.variant === 'board' && (
+											<img
+												class={project.imageClass}
+												src={project.image}
+												alt={project.alt}
+												loading="lazy"
+												decoding="async"
+											/>
+										)}
+									</div>
+								</article>
+							</a>
+						))
+					}
+				</div>
+			</section>
+
+		</main>
+	</div>
 </Layout>
+
+<style>
+	.page {
+		position: relative;
+		width: min(calc(100% - 3rem), 78rem);
+		margin: 0 auto;
+		padding: 1.25rem 0 5rem;
+	}
+
+	.eyebrow,
+	.project-name {
+		font-size: 0.95rem;
+		font-weight: 600;
+		letter-spacing: -0.02em;
+	}
+
+	.hero {
+		padding: 7rem 0 6.5rem;
+	}
+
+	.hero-copy {
+		width: 100%;
+		max-width: 100%;
+	}
+
+	.eyebrow,
+	.project-name {
+		margin: 0;
+		color: var(--muted-foreground);
+		font-style: italic;
+		font-weight: 500;
+	}
+
+	h1,
+	h2,
+	h3 {
+		margin: 0;
+		font-weight: 800;
+		letter-spacing: -0.05em;
+		color: var(--foreground);
+	}
+
+	.hero-text,
+	.hero-note,
+	blockquote,
+	.footer-note p,
+	.footer-note a {
+		font-size: 1.2rem;
+		line-height: 1.55;
+	}
+
+	.hero-text {
+		max-width: 38rem;
+		margin: 1.5rem 0 0;
+	}
+
+	.hero-note {
+		max-width: 40rem;
+		margin: 1rem 0 0;
+		color: var(--muted-foreground);
+		font-style: italic;
+	}
+
+	.projects-grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 2rem;
+	}
+
+	.project-link {
+		display: block;
+		color: inherit;
+		text-decoration: none;
+	}
+
+	.project-link:hover,
+	.project-link:focus-visible,
+	.project-link:visited,
+	.project-link:active {
+		color: inherit;
+		text-decoration: none;
+	}
+
+	.project-card {
+		display: grid;
+		gap: 1.6rem;
+		padding: 1.5rem;
+		border-radius: 1.35rem;
+		overflow: hidden;
+		transition:
+			transform 140ms ease,
+			box-shadow 140ms ease;
+	}
+
+	.project-link:hover .project-card,
+	.project-link:focus-visible .project-card {
+		transform: translateY(-4px);
+		box-shadow: 0 18px 36px rgba(23, 23, 23, 0.08);
+	}
+
+	.project-link:focus-visible {
+		outline: none;
+	}
+
+	.project-card.lime {
+		background: #dbff63;
+	}
+
+	.project-card.cyan {
+		background: #91e6ee;
+	}
+
+	.project-card.lavender {
+		background: #c5baf9;
+	}
+
+	.project-card.mint {
+		background: #78f1cf;
+	}
+
+	.project-header {
+		display: flex;
+		align-items: center;
+		justify-content: flex-start;
+	}
+
+	h2 {
+		font-size: clamp(1.85rem, 2.4vw, 2.35rem);
+		line-height: 1.04;
+	}
+
+	.project-title {
+		max-width: none;
+		width: 100%;
+		min-height: 4.6em;
+		font-size: clamp(1.45rem, 1.75vw, 1.9rem);
+		line-height: 1.16;
+		letter-spacing: -0.04em;
+		text-wrap: pretty;
+	}
+
+	.project-visual {
+		position: relative;
+		height: 17rem;
+		display: grid;
+		align-items: end;
+		justify-items: center;
+		overflow: hidden;
+	}
+
+	.project-preview-image {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: center top;
+		border-radius: 1rem;
+		box-shadow: 0 18px 40px rgba(23, 23, 23, 0.08);
+	}
+
+	.project-visual.split {
+		grid-template-columns: 8rem 1fr;
+		gap: 1rem;
+		align-items: end;
+	}
+
+	.project-visual.split .project-preview-image {
+		grid-column: 1 / -1;
+	}
+
+	.ui-window,
+	.ui-phone,
+	.ui-board {
+		background: #ffffff;
+		border: 1.5px solid rgba(23, 23, 23, 0.1);
+		box-shadow: 0 18px 40px rgba(23, 23, 23, 0.08);
+	}
+
+	.ui-window {
+		width: 100%;
+		height: 13.75rem;
+		border-radius: 0.95rem;
+		overflow: hidden;
+	}
+
+	.ui-window.compact {
+		height: 13rem;
+	}
+
+	.ui-topbar {
+		height: 1rem;
+		background: #2f3640;
+	}
+
+	.ui-window-body {
+		display: grid;
+		grid-template-columns: 5rem 1fr;
+		height: calc(100% - 1rem);
+	}
+
+	.ui-column {
+		background: #eef1f6;
+		border-right: 1px solid #dde3ec;
+	}
+
+	.ui-content,
+	.ui-content.tight {
+		padding: 0.9rem;
+		display: grid;
+		align-content: start;
+		gap: 0.65rem;
+	}
+
+	.ui-line,
+	.ui-panel,
+	.ui-phone-card,
+	.ui-photo,
+	.ui-board-card,
+	.ui-table-row,
+	.ui-search {
+		border-radius: 0.7rem;
+	}
+
+	.ui-line {
+		height: 0.8rem;
+		background: #dce3ee;
+	}
+
+	.ui-line.short {
+		width: 56%;
+	}
+
+	.ui-panel.large {
+		height: 4.8rem;
+		background: #f1f5fb;
+		border: 1px solid #e0e7f0;
+	}
+
+	.ui-panel-row {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 0.7rem;
+	}
+
+	.ui-panel {
+		height: 3.4rem;
+		background: #eef3f9;
+		border: 1px solid #e0e7f0;
+	}
+
+	.ui-phone {
+		width: 7.25rem;
+		height: 13rem;
+		padding: 0.65rem 0.55rem;
+		border-radius: 1.2rem;
+		display: grid;
+		align-content: start;
+		gap: 0.45rem;
+	}
+
+	.ui-phone.tall {
+		width: 7.5rem;
+		height: 14.3rem;
+	}
+
+	.ui-phone-notch {
+		width: 2.4rem;
+		height: 0.45rem;
+		margin: 0 auto 0.2rem;
+		border-radius: 999px;
+		background: #232323;
+	}
+
+	.ui-phone-line {
+		height: 0.68rem;
+		background: #e7edf5;
+	}
+
+	.ui-phone-line.short {
+		width: 60%;
+	}
+
+	.ui-phone-card {
+		height: 2.35rem;
+		background: #f4f6fa;
+		border: 1px solid #e4e8ef;
+	}
+
+	.ui-phone-card.slim {
+		height: 1.5rem;
+	}
+
+	.ui-photo {
+		height: 4.6rem;
+		background: linear-gradient(135deg, #dce7f5 0%, #f5dcc9 100%);
+		border: 1px solid #dde4ec;
+	}
+
+	.phones {
+		display: flex;
+		gap: 0.8rem;
+		align-items: end;
+		justify-content: center;
+	}
+
+	.ui-table-row {
+		height: 1.6rem;
+		background: #f3f6fa;
+		border: 1px solid #e3e8ef;
+	}
+
+	.ui-board {
+		width: 100%;
+		height: 14.5rem;
+		padding: 0.9rem;
+		border-radius: 1rem;
+		display: grid;
+		gap: 0.8rem;
+	}
+
+	.ui-board-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 0.8rem;
+	}
+
+	.ui-search {
+		height: 1.45rem;
+		flex: 1;
+		background: #f3f5f9;
+		border: 1px solid #e1e5ec;
+	}
+
+	.ui-avatar {
+		width: 1.5rem;
+		height: 1.5rem;
+		border-radius: 50%;
+		background: #e0e5ee;
+	}
+
+	.ui-board-grid {
+		display: grid;
+		grid-template-columns: 1.2fr 1fr 1fr;
+		gap: 0.7rem;
+		height: 100%;
+	}
+
+	.ui-board-card {
+		min-height: 4rem;
+		background: #f4f6fa;
+		border: 1px solid #e3e8ef;
+	}
+
+	.ui-board-card.feature {
+		grid-row: span 2;
+	}
+
+	@media (max-width: 980px) {
+		.projects-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	@media (max-width: 720px) {
+		.page {
+			width: min(calc(100% - 1.5rem), 78rem);
+			padding-top: 1rem;
+		}
+
+		.hero {
+			padding: 4rem 0 4.5rem;
+		}
+
+		.hero-text,
+		.hero-note {
+			font-size: 1.05rem;
+		}
+
+		.project-card {
+			padding: 1.25rem;
+			border-radius: 1.15rem;
+		}
+
+		.project-title {
+			min-height: auto;
+		}
+
+		.project-visual {
+			height: 15rem;
+		}
+
+		.project-visual.split {
+			grid-template-columns: 6.5rem 1fr;
+		}
+
+		.ui-phone,
+		.ui-phone.tall {
+			width: 6.3rem;
+			height: 12.3rem;
+		}
+
+		.desktop-hide-small {
+			display: none;
+		}
+	}
+</style>

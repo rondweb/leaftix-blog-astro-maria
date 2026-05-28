@@ -1,0 +1,190 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+---
+
+<Layout title="Resume | Alba Studio" description="Resume page for a UX designer portfolio.">
+	<a class="skip-link" href="#main-content">Skip to content</a>
+
+	<div class="page">
+		<SiteHeader />
+
+		<main id="main-content">
+			<section class="hero">
+				<p class="eyebrow">Resume</p>
+				<h1 class="display-title">10+ years shaping digital products through UX, UI, and systems thinking.</h1>
+				<div class="hero-subgrid">
+					<p class="hero-text">
+						My work has focused on product clarity: helping teams bring structure to messy
+						workflows, overloaded interfaces, and growing systems that need to scale without
+						becoming harder to use.
+					</p>
+					<p class="hero-note">
+						I work across product strategy, interface design, and design systems, with a strong
+						bias toward products where clarity has real operational value.
+					</p>
+				</div>
+			</section>
+
+			<section class="editorial-section">
+				<div class="section-rail">
+					<p class="section-kicker">Snapshot</p>
+				</div>
+				<div class="story-block">
+					<p><strong>Location:</strong> Europe</p>
+					<p><strong>Focus:</strong> UX Design / Product Design</p>
+					<p><strong>Specialties:</strong> Dashboards, workflows, design systems</p>
+					<p><strong>Contact:</strong> hello@alba.com</p>
+				</div>
+			</section>
+
+			<section class="editorial-section">
+				<div class="section-rail">
+					<p class="section-kicker">Experience</p>
+				</div>
+				<div class="story-block">
+					<p>
+						<strong>Lead UX Designer</strong><br />
+						Independent / Consulting, 2021 - Present
+					</p>
+					<p>
+						Leading interface design, product thinking, and design systems work across SaaS and
+						service platforms.
+					</p>
+					<p>
+						<strong>Senior Product Designer</strong><br />
+						Digital Product Studio, 2017 - 2021
+					</p>
+					<p>
+						Designed workflows, dashboards, and multi-platform product experiences for startup
+						and enterprise clients.
+					</p>
+					<p>
+						<strong>UI/UX Designer</strong><br />
+						In-house Product Teams, 2014 - 2017
+					</p>
+					<p>
+						Built core interface patterns, user flows, and production-ready visual systems for
+						web and mobile products.
+					</p>
+				</div>
+			</section>
+
+			<section class="editorial-section">
+				<div class="section-rail">
+					<p class="section-kicker">Capabilities</p>
+				</div>
+				<div class="story-block">
+					<p>
+						<strong>Product Strategy:</strong> framing problems, prioritizing experience
+						decisions, and aligning product goals with user value.
+					</p>
+					<p>
+						<strong>UI Systems:</strong> building coherent interface languages that scale across
+						flows, features, and implementation teams.
+					</p>
+					<p>
+						<strong>Execution:</strong> taking concepts through wireframes, high-fidelity UI,
+						refinement, and developer-ready handoff.
+					</p>
+				</div>
+			</section>
+		</main>
+	</div>
+</Layout>
+
+<style>
+	.page {
+		position: relative;
+		width: min(calc(100% - 3rem), 78rem);
+		margin: 0 auto;
+		padding: 1.25rem 0 5rem;
+	}
+
+	.eyebrow,
+	.section-kicker {
+		font-size: 0.95rem;
+		font-weight: 600;
+		letter-spacing: -0.02em;
+	}
+
+	.hero {
+		padding: 6rem 0 4rem;
+	}
+
+	.eyebrow,
+	.section-kicker {
+		margin: 0;
+		color: var(--muted-foreground);
+		font-style: italic;
+		font-weight: 500;
+	}
+
+	.hero-subgrid {
+		display: grid;
+		grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.7fr);
+		gap: 2rem;
+		margin-top: 1.75rem;
+	}
+
+	.hero-text,
+	.hero-note,
+	.story-block p {
+		font-size: 1.08rem;
+		line-height: 1.7;
+		margin: 0;
+	}
+
+	.hero-note {
+		color: var(--muted-foreground);
+	}
+
+	.editorial-section {
+		display: grid;
+		grid-template-columns: 16rem minmax(0, 1fr);
+		gap: 2rem;
+		padding: 2.5rem 0;
+		border-top: 1px solid var(--border);
+	}
+
+	.section-rail {
+		align-self: start;
+	}
+
+	.story-block {
+		display: grid;
+		gap: 1rem;
+		max-width: 52rem;
+	}
+
+	.story-block strong {
+		color: var(--foreground);
+	}
+
+	@media (max-width: 980px) {
+		.hero-subgrid {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	@media (max-width: 720px) {
+		.page {
+			width: min(calc(100% - 1.5rem), 78rem);
+			padding-top: 1rem;
+		}
+
+		.hero {
+			padding: 4rem 0 3rem;
+		}
+
+		.editorial-section {
+			grid-template-columns: 1fr;
+		}
+
+		.hero-text,
+		.hero-note,
+		.story-block p {
+			font-size: 1.05rem;
+		}
+	}
+</style>

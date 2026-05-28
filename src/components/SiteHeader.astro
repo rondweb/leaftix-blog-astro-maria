@@ -1,0 +1,23 @@
+---
+import { siteConfig } from '../config/site';
+---
+
+<header class="shared-header">
+	<a class="shared-brand" href="/" aria-label={`${siteConfig.name} homepage`}>
+		<span class="shared-brand-mark">{siteConfig.name}</span>
+	</a>
+
+	<nav class="shared-nav" aria-label="Primary">
+		{siteConfig.navLinks.map((link) => <a href={link.href}>{link.label}</a>)}
+
+		<div class="shared-menu">
+			<button class="shared-menu-trigger" type="button" aria-haspopup="true">
+				<span>All Pages</span>
+				<img src="/icons/chevron-down.svg" alt="" width="16" height="16" />
+			</button>
+			<div class="shared-menu-panel">
+				{siteConfig.extraPages.map((link) => <a href={link.href}>{link.label}</a>)}
+			</div>
+		</div>
+	</nav>
+</header>
