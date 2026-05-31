@@ -8,8 +8,6 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-84cc16?style=for-the-badge)](./LICENSE)
 
 **Preview:** [maria-lake.vercel.app](https://maria-lake.vercel.app/)
-**Repository:** [andreialba/maria](https://github.com/andreialba/maria)
-
 Maria is a clean Astro portfolio theme for UI/UX designers, product designers, and visual product thinkers.
 
 It includes:

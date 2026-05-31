@@ -144,14 +144,15 @@
 }
 
 .mcc-btn-primary {
-  background: #f5f5f5;
-  color: #111111;
-  border-color: #f5f5f5;
+  background: #111111;
+  color: #ffffff;
+  border-color: #111111;
 }
 
 .mcc-btn-primary:hover,
 .mcc-btn-primary:focus-visible {
-  background: #ffffff;
+  background: #000000;
+  border-color: #000000;
 }
 
 .mcc-overlay {
