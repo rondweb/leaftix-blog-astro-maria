@@ -2,6 +2,8 @@
 import { siteConfig } from '../config/site';
 const currentPath = Astro.url.pathname || '/';
 const menuPanelId = 'shared-menu-panel';
+const mobileMenuPanelId = 'shared-mobile-menu-panel';
+const mobileSubmenuPanelId = 'shared-mobile-submenu-panel';
 ---
 
 <header class="shared-header">
@@ -80,7 +82,12 @@ const menuPanelId = 'shared-menu-panel';
 		</button>
 
 		<details class="shared-nav-mobile">
-			<summary class="shared-nav-toggle" aria-label="Toggle navigation menu">
+			<summary
+				class="shared-nav-toggle"
+				aria-label="Toggle navigation menu"
+				aria-expanded="false"
+				aria-controls={mobileMenuPanelId}
+			>
 				<span class="shared-nav-toggle-box" aria-hidden="true">
 					<span></span>
 					<span></span>
@@ -88,7 +95,7 @@ const menuPanelId = 'shared-menu-panel';
 				</span>
 			</summary>
 
-			<nav class="shared-mobile-panel" aria-label="Mobile">
+			<nav class="shared-mobile-panel" id={mobileMenuPanelId} aria-label="Mobile navigation">
 				<a class="shared-mobile-brand" href="/" aria-label={`${siteConfig.name} homepage`}>
 					{siteConfig.name}
 				</a>
@@ -96,11 +103,15 @@ const menuPanelId = 'shared-menu-panel';
 				{siteConfig.navLinks.map((link) => <a href={link.href}>{link.label}</a>)}
 
 				<details class="shared-mobile-submenu">
-					<summary class="shared-mobile-submenu-trigger">
+					<summary
+						class="shared-mobile-submenu-trigger"
+						aria-expanded="false"
+						aria-controls={mobileSubmenuPanelId}
+					>
 						<span>Other</span>
 						<img src="/icons/chevron-down.svg" alt="" width="16" height="16" />
 					</summary>
-					<div class="shared-mobile-submenu-panel">
+					<div class="shared-mobile-submenu-panel" id={mobileSubmenuPanelId}>
 						{siteConfig.extraPages.map((link) => <a href={link.href}>{link.label}</a>)}
 					</div>
 				</details>
@@ -170,5 +181,78 @@ const menuPanelId = 'shared-menu-panel';
 		});
 		menu.addEventListener('mouseenter', () => setExpanded(true));
 		menu.addEventListener('mouseleave', () => setExpanded(false));
+	})();
+
+	(() => {
+		const mobileMenu = document.querySelector('.shared-nav-mobile');
+		if (!(mobileMenu instanceof HTMLDetailsElement)) return;
+
+		const root = document.documentElement;
+		const toggle = mobileMenu.querySelector('.shared-nav-toggle');
+		const panel = mobileMenu.querySelector('.shared-mobile-panel');
+		const submenu = mobileMenu.querySelector('.shared-mobile-submenu');
+		const submenuToggle = submenu?.querySelector('.shared-mobile-submenu-trigger');
+		const lockClass = 'shared-mobile-menu-open';
+		const focusableSelector = [
+			'a[href]',
+			'button:not([disabled])',
+			'summary',
+			'[tabindex]:not([tabindex="-1"])',
+		].join(',');
+
+		const getFocusableItems = () =>
+			Array.from(mobileMenu.querySelectorAll(focusableSelector)).filter((item) => {
+				if (!(item instanceof HTMLElement)) return false;
+				return !item.hasAttribute('disabled') && item.offsetParent !== null;
+			});
+
+		const closeMobileMenu = () => {
+			mobileMenu.open = false;
+			if (toggle instanceof HTMLElement) {
+				toggle.focus();
+			}
+		};
+
+		const syncScrollLock = () => {
+			root.classList.toggle(lockClass, mobileMenu.open);
+			toggle?.setAttribute('aria-expanded', String(mobileMenu.open));
+		};
+
+		submenu?.addEventListener('toggle', () => {
+			submenuToggle?.setAttribute('aria-expanded', String(submenu.open));
+		});
+		mobileMenu.addEventListener('toggle', syncScrollLock);
+		mobileMenu.addEventListener('keydown', (event) => {
+			if (!mobileMenu.open) return;
+
+			if (event.key === 'Escape') {
+				event.preventDefault();
+				closeMobileMenu();
+				return;
+			}
+
+			if (event.key !== 'Tab') return;
+
+			const focusableItems = getFocusableItems();
+			const firstItem = focusableItems[0];
+			const lastItem = focusableItems[focusableItems.length - 1];
+
+			if (!firstItem || !lastItem) return;
+
+			if (event.shiftKey && document.activeElement === firstItem) {
+				event.preventDefault();
+				lastItem.focus();
+			} else if (!event.shiftKey && document.activeElement === lastItem) {
+				event.preventDefault();
+				firstItem.focus();
+			}
+		});
+		panel?.addEventListener('click', (event) => {
+			if (event.target instanceof Element && event.target.closest('a[href]')) {
+				mobileMenu.open = false;
+			}
+		});
+		window.addEventListener('pagehide', () => root.classList.remove(lockClass));
+		syncScrollLock();
 	})();
 </script>

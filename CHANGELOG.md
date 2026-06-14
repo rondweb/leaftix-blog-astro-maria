@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 - Improved the mobile navigation with a full-screen menu, larger tap targets, and an expandable submenu for secondary pages.
 - Added mobile menu contact actions with email and icon-only social links.
 - Kept the mobile menu aligned with the header brand and fixed narrow-viewport overflow.
+- Locked background scrolling while the mobile menu is open and improved mobile menu accessibility with expanded states, keyboard focus containment, Escape-to-close behavior, and link-triggered closing.
 
 ## [1.0.2] - 2026-06-09
 
