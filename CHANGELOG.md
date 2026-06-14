@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.3] - 2026-06-14
+
+- Improved the mobile navigation with a full-screen menu, larger tap targets, and an expandable submenu for secondary pages.
+- Added mobile menu contact actions with email and icon-only social links.
+- Kept the mobile menu aligned with the header brand and fixed narrow-viewport overflow.
+
 ## [1.0.2] - 2026-06-09
 
 - Updated homepage, about, resume, work, paginated work, and sample case study metadata to describe the project as an Astro theme for UI/UX designer portfolios.

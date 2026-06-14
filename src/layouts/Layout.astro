@@ -231,7 +231,7 @@ const schemaData =
 
 	body {
 		margin: 0;
-		min-width: 320px;
+		min-width: 0;
 		min-height: 100vh;
 		font-family: var(--font-sans);
 		color: var(--foreground);
@@ -531,6 +531,14 @@ const schemaData =
 		box-shadow: var(--shadow-soft);
 	}
 
+	.shared-mobile-submenu {
+		width: 100%;
+	}
+
+	.shared-mobile-brand {
+		text-decoration: none;
+	}
+
 	.shared-mobile-panel a,
 	.shared-mobile-submenu-trigger {
 		min-height: 44px;
@@ -567,13 +575,61 @@ const schemaData =
 	}
 
 	.shared-mobile-submenu-panel {
-		padding-top: 0.2rem;
+		margin-top: 0.35rem;
+		padding: 0.15rem 0 0.25rem 0.85rem;
 		display: grid;
 		gap: 0.2rem;
 	}
 
 	.shared-mobile-submenu-panel a {
-		padding-left: 1rem;
+		padding-left: 0.8rem;
+	}
+
+	.shared-mobile-contact {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+		padding-top: 0.85rem;
+	}
+
+	.shared-mobile-panel .shared-mobile-contact-link {
+		width: 46px;
+		height: 46px;
+		display: inline-grid;
+		place-items: center;
+		justify-content: center;
+		min-height: 0;
+		padding: 0;
+		border: 1px solid var(--control-border);
+		border-radius: 50%;
+		color: var(--foreground);
+		text-decoration: none;
+		transition:
+			background-color 120ms ease,
+			border-color 120ms ease,
+			transform 120ms ease;
+	}
+
+	.shared-mobile-panel .shared-mobile-contact-link svg {
+		width: 1.15rem;
+		height: 1.15rem;
+		fill: none;
+		stroke: currentColor;
+		stroke-width: 1.8;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+	}
+
+	.shared-mobile-panel .shared-mobile-contact-link[aria-label='LinkedIn'] svg {
+		fill: currentColor;
+		stroke: none;
+	}
+
+	.shared-mobile-panel .shared-mobile-contact-link:hover,
+	.shared-mobile-panel .shared-mobile-contact-link:focus-visible {
+		background: var(--muted);
+		border-color: var(--border-strong);
+		transform: translateY(-1px);
 	}
 
 	.display-title {
@@ -738,16 +794,102 @@ const schemaData =
 			display: block;
 		}
 
+		.shared-nav-mobile[open] {
+			z-index: 50;
+		}
+
 		.shared-nav-mobile[open] .shared-nav-toggle {
 			margin-left: auto;
+			position: relative;
+			z-index: 60;
 		}
 
 		.shared-nav-mobile[open] .shared-mobile-panel {
-			position: absolute;
-			top: calc(100% + 0.75rem);
-			right: 0;
-			margin-left: 0;
-			z-index: 30;
+			position: fixed;
+			inset: 0;
+			width: auto;
+			min-height: 100vh;
+			min-height: 100dvh;
+			margin: 0;
+			padding: 6rem 1.25rem 2rem;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 0.55rem;
+			background: var(--background);
+			border: 0;
+			border-radius: 0;
+			box-shadow: none;
+			overflow-x: hidden;
+			overflow-y: auto;
+			z-index: 50;
+		}
+
+		.shared-mobile-panel > a,
+		.shared-mobile-submenu {
+			width: min(100%, 24rem);
+		}
+
+		.shared-mobile-panel .shared-mobile-brand {
+			position: fixed;
+			top: 1rem;
+			left: 0.75rem;
+			z-index: 55;
+			width: auto;
+			min-height: 44px;
+			margin-bottom: 0;
+			padding: 0;
+			display: inline-flex;
+			align-items: center;
+			justify-content: center;
+			border-bottom: 0;
+			font-size: 1.3rem;
+			font-weight: 800;
+			letter-spacing: -0.04em;
+		}
+
+		.shared-mobile-panel .shared-mobile-brand:hover,
+		.shared-mobile-panel .shared-mobile-brand:focus-visible {
+			background: transparent;
+			color: var(--foreground);
+		}
+
+		.shared-mobile-panel > a:not(.shared-mobile-brand),
+		.shared-mobile-submenu-trigger {
+			min-height: 56px;
+			padding: 0.85rem 0;
+			font-size: 1.12rem;
+			border-bottom: 1px solid var(--border);
+			border-radius: 0;
+		}
+
+		.shared-mobile-panel > a:not(.shared-mobile-brand):hover,
+		.shared-mobile-panel > a:not(.shared-mobile-brand):focus-visible,
+		.shared-mobile-submenu-trigger:hover,
+		.shared-mobile-submenu-trigger:focus-visible {
+			background: transparent;
+			color: var(--muted-foreground);
+		}
+
+		.shared-mobile-submenu-panel a {
+			min-height: 48px;
+			font-size: 1rem;
+			border-bottom: 0;
+			color: var(--muted-foreground);
+		}
+
+		.shared-mobile-contact {
+			width: min(100%, 24rem);
+			justify-content: center;
+			margin-top: auto;
+			padding-top: 2rem;
+		}
+
+		.shared-mobile-panel .shared-mobile-contact-link {
+			width: 50px;
+			height: 50px;
+			flex: 0 0 auto;
+			padding: 0;
 		}
 
 		.shared-footer-inner {
