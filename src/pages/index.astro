@@ -1,13 +1,12 @@
 ---
-import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import SiteHeader from '../components/SiteHeader.astro';
-import { projects } from '../data/projects';
+import { siteConfig } from '../config/site';
 ---
 
 <Layout
-	title="Maria | Astro Theme for UI/UX Designer Portfolios"
-	description="An Astro theme for UI/UX designer portfolios with case study pages, a polished homepage, and modern product design presentation."
+	title={siteConfig.title}
+	description={siteConfig.description}
 >
 	<a class="skip-link" href="#main-content">Skip to content</a>
 
@@ -16,49 +15,118 @@ import { projects } from '../data/projects';
 
 		<main id="main-content">
 			<section class="hero" id="top">
-				<div class="hero-copy">
-					<h1 class="display-title">Hi, I'm Maria. I design digital products that actually make sense.</h1>
-					<p class="hero-text">
-						Ten-plus years helping teams turn messy problems into clear, useful experiences.
-						Corporations, startups, scrappy independents: if there's a user confused
-						somewhere, I want to fix that.
-					</p>
-					<p class="hero-note" id="about">
-						I work best in the messy middle - where requirements are fuzzy, stakes are real,
-						and good design actually matters.
-					</p>
-				</div>
-			</section>
-
-			<section class="projects" id="work">
-				<div class="projects-grid">
-					{
-						projects.map((project, index) => (
-							<a class="project-link" href={project.href}>
-								<article class={`project-card ${project.background}`}>
-									<div class="project-header">
-										<p class="project-name">{project.name}</p>
-									</div>
-									<h2 class="project-title">{project.title}</h2>
-
-									<div class={`project-visual ${project.variant}`}>
-										<Image
-											class={project.imageClass}
-											src={project.image}
-											alt={project.alt}
-											loading={index < 2 ? 'eager' : 'lazy'}
-											decoding="async"
-											widths={[480, 720, 960]}
-											sizes="(max-width: 980px) 100vw, 50vw"
-										/>
-									</div>
-								</article>
+				<div class="hero-layout">
+					<div class="hero-copy">
+						<h1 class="display-title">The future of sustainable food production is autonomous.</h1>
+						<p class="hero-text">
+							Welcome to the Leaftix Blog — where we explore the intersection of artificial
+							intelligence, autonomous governance, and sustainable agriculture. Discover how
+							multi-agent AI, Digital Twins, and edge-native architectures are transforming
+							food production from reactive monitoring to proactive governance.
+						</p>
+						<div class="hero-actions">
+							<a class="hero-btn" href="/blog">
+								<span>Read the Blog</span>
+								<span aria-hidden="true">-></span>
 							</a>
-						))
-					}
+							<a class="hero-btn hero-btn-outline" href="/about">
+								<span>About Leaftix</span>
+								<span aria-hidden="true">-></span>
+							</a>
+						</div>
+					</div>
+					<div class="hero-visual">
+						<img
+							class="hero-logo"
+							src="/leaftix-logo.png"
+							alt="Leaftix Logo — Green leaf symbol representing sustainable agriculture technology"
+							width="320"
+							height="416"
+							loading="eager"
+							decoding="async"
+						/>
+					</div>
 				</div>
 			</section>
 
+			<section class="featured-section" id="featured">
+				<div class="featured-header">
+					<p class="section-eyebrow">Featured Topics</p>
+					<h2>Exploring the future of AI-governed agriculture</h2>
+				</div>
+
+				<div class="featured-grid">
+					<article class="featured-card">
+						<div class="featured-card-icon" aria-hidden="true">
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+								<path d="M12 2a10 10 0 1 0 10 10"></path>
+								<path d="M12 6v6l4 2"></path>
+							</svg>
+						</div>
+						<h3 class="featured-card-title">Autonomous Governance</h3>
+						<p class="featured-card-text">
+							How multi-agent AI systems are enabling real-time, proactive decision-making in agricultural environments.
+						</p>
+					</article>
+
+					<article class="featured-card">
+						<div class="featured-card-icon" aria-hidden="true">
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+								<rect x="2" y="3" width="20" height="14" rx="2"></rect>
+								<line x1="8" y1="21" x2="16" y2="21"></line>
+								<line x1="12" y1="17" x2="12" y2="21"></line>
+							</svg>
+						</div>
+						<h3 class="featured-card-title">Digital Twin Technology</h3>
+						<p class="featured-card-text">
+							Building virtual replicas of agricultural systems to simulate, predict, and optimize production outcomes.
+						</p>
+					</article>
+
+					<article class="featured-card">
+						<div class="featured-card-icon" aria-hidden="true">
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+								<circle cx="12" cy="12" r="10"></circle>
+								<path d="M12 6v6l4 2"></path>
+							</svg>
+						</div>
+						<h3 class="featured-card-title">Edge Architecture</h3>
+						<p class="featured-card-text">
+							Deploying intelligence at the edge for real-time sensor processing, low-latency decisions, and resilient operations.
+						</p>
+					</article>
+
+					<article class="featured-card">
+						<div class="featured-card-icon" aria-hidden="true">
+							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+								<path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+								<path d="M2 17l10 5 10-5"></path>
+								<path d="M2 12l10 5 10-5"></path>
+							</svg>
+						</div>
+						<h3 class="featured-card-title">Sustainable Production</h3>
+						<p class="featured-card-text">
+							Reducing resource consumption while increasing yield through precision agriculture and AI-driven optimization.
+						</p>
+					</article>
+				</div>
+			</section>
+
+			<section class="cta-section">
+				<div class="cta-card">
+					<h2 class="cta-title">Stay updated with Leaftix</h2>
+					<p class="cta-text">
+						Follow our journey as we build the autonomous governance infrastructure for
+						sustainable food production. New articles, research insights, and product updates.
+					</p>
+					<div class="cta-actions">
+						<a class="cta-btn" href="mailto:info@leaftix.com">
+							<span>Contact us</span>
+							<span aria-hidden="true">-></span>
+						</a>
+					</div>
+				</div>
+			</section>
 		</main>
 	</div>
 </Layout>
@@ -72,364 +140,257 @@ import { projects } from '../data/projects';
 	}
 
 	.eyebrow,
-	.project-name {
+	.section-eyebrow {
 		font-family: var(--font-mono);
 		font-size: 0.82rem;
 		font-weight: 600;
 		letter-spacing: 0.08em;
 		line-height: 1.4;
 		text-transform: uppercase;
-	}
-
-	.hero {
-		padding: 7rem 0 6.5rem;
-	}
-
-	.hero-copy {
-		width: 100%;
-		max-width: 100%;
-	}
-
-	.eyebrow,
-	.project-name {
 		margin: 0;
 		color: var(--muted-foreground);
 		font-style: normal;
 	}
 
-	.project-card .project-name {
-		color: rgba(23, 23, 23, 0.72);
+	/* Hero */
+	.hero {
+		padding: 5rem 0 4rem;
 	}
 
-	.project-card h2 {
-		color: #171717;
+	.hero-layout {
+		display: grid;
+		grid-template-columns: minmax(0, 1.4fr) minmax(14rem, 18rem);
+		gap: 2.5rem;
+		align-items: center;
 	}
 
-	h1,
-	h2,
-	h3 {
+	.hero-copy {
+		max-width: 52rem;
+	}
+
+	h1 {
 		margin: 0;
 		font-weight: 800;
 		letter-spacing: -0.05em;
 		color: var(--foreground);
 	}
 
-	.hero-text,
-	.hero-note,
-	blockquote,
-	.footer-note p,
-	.footer-note a {
-		font-size: 1.2rem;
-		line-height: 1.55;
-	}
-
 	.hero-text {
-		max-width: 38rem;
+		font-size: 1.15rem;
+		line-height: 1.7;
 		margin: 1.5rem 0 0;
-	}
-
-	.hero-note {
-		max-width: 40rem;
-		margin: 1rem 0 0;
 		color: var(--muted-foreground);
-		font-style: italic;
+		max-width: 44rem;
 	}
 
-	.projects-grid {
+	.hero-actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.85rem;
+		margin-top: 2rem;
+	}
+
+	.hero-btn {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.6rem;
+		min-height: 48px;
+		padding: 0.85rem 1.3rem;
+		border: 1px solid var(--control-border);
+		border-radius: 999px;
+		font-size: 1rem;
+		font-weight: 700;
+		color: inherit;
+		text-decoration: none;
+		transition:
+			transform 120ms ease,
+			border-color 120ms ease,
+			background-color 120ms ease;
+		background: var(--foreground);
+		color: var(--background);
+		border-color: var(--foreground);
+	}
+
+	.hero-btn-outline {
+		background: transparent;
+		color: var(--foreground);
+		border-color: var(--control-border);
+	}
+
+	.hero-btn:hover,
+	.hero-btn:focus-visible {
+		transform: translateY(-2px);
+	}
+
+	.hero-btn-outline:hover,
+	.hero-btn-outline:focus-visible {
+		background: var(--muted);
+		border-color: var(--border-strong);
+	}
+
+	.hero-visual {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.hero-logo {
+		width: min(100%, 16rem);
+		height: auto;
+		display: block;
+	}
+
+	/* Featured Section */
+	.featured-section {
+		padding: 4rem 0;
+		border-top: 1px solid var(--border);
+	}
+
+	.featured-header {
+		max-width: 42rem;
+		margin-bottom: 2.5rem;
+	}
+
+	.featured-header h2 {
+		margin: 0.85rem 0 0;
+		font-size: clamp(1.8rem, 2.6vw, 2.4rem);
+		font-weight: 800;
+		letter-spacing: -0.04em;
+		line-height: 1.08;
+		color: var(--foreground);
+	}
+
+	.featured-grid {
 		display: grid;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: 2rem;
-	}
-
-	.project-link {
-		display: block;
-		color: inherit;
-		text-decoration: none;
-	}
-
-	.project-link:hover,
-	.project-link:focus-visible,
-	.project-link:visited,
-	.project-link:active {
-		color: inherit;
-		text-decoration: none;
-	}
-
-	.project-card {
-		display: grid;
 		gap: 1.5rem;
+	}
+
+	.featured-card {
 		padding: 1.5rem;
-		border-radius: 1.35rem;
-		overflow: hidden;
+		border: 1px solid var(--border);
+		border-radius: 1.15rem;
+		background: var(--card);
 		transition:
 			transform 140ms ease,
 			box-shadow 140ms ease;
 	}
 
-	.project-link:hover .project-card,
-	.project-link:focus-visible .project-card {
-		transform: translateY(-4px);
+	.featured-card:hover {
+		transform: translateY(-3px);
 		box-shadow: var(--shadow-soft);
 	}
 
-	.project-link:focus-visible {
-		outline-offset: 6px;
+	.featured-card-icon {
+		width: 2.5rem;
+		height: 2.5rem;
+		display: grid;
+		place-items: center;
+		border-radius: 0.75rem;
+		background: var(--muted);
+		color: var(--foreground);
+		margin-bottom: 1rem;
 	}
 
-	.project-card.lime {
-		background: #dbff63;
+	.featured-card-icon svg {
+		width: 1.3rem;
+		height: 1.3rem;
 	}
 
-	.project-card.cyan {
-		background: #91e6ee;
+	.featured-card-title {
+		margin: 0 0 0.5rem;
+		font-size: 1.1rem;
+		font-weight: 700;
+		letter-spacing: -0.02em;
+		color: var(--foreground);
 	}
 
-	.project-card.lavender {
-		background: #c5baf9;
+	.featured-card-text {
+		margin: 0;
+		font-size: 0.98rem;
+		line-height: 1.65;
+		color: var(--muted-foreground);
 	}
 
-	.project-card.mint {
-		background: #78f1cf;
+	/* CTA Section */
+	.cta-section {
+		padding: 3rem 0 2rem;
 	}
 
-	.project-header {
-		display: flex;
-		align-items: center;
-		justify-content: flex-start;
+	.cta-card {
+		padding: 3rem;
+		border-radius: 1.5rem;
+		background: var(--muted);
+		border: 1px solid var(--border);
+		text-align: center;
+		max-width: 48rem;
+		margin: 0 auto;
 	}
 
-	h2 {
-		font-size: clamp(1.85rem, 2.4vw, 2.35rem);
-		line-height: 1.04;
-	}
-
-	.project-title {
-		max-width: none;
-		width: 100%;
-		font-size: clamp(1.45rem, 1.75vw, 1.9rem);
-		line-height: 1.16;
+	.cta-title {
+		margin: 0;
+		font-size: clamp(1.6rem, 2.4vw, 2.2rem);
+		font-weight: 800;
 		letter-spacing: -0.04em;
-		text-wrap: pretty;
+		line-height: 1.08;
+		color: var(--foreground);
 	}
 
-	.project-visual {
-		position: relative;
-		height: 17rem;
-		display: grid;
-		align-items: end;
-		justify-items: center;
-		overflow: hidden;
+	.cta-text {
+		margin: 1rem auto 0;
+		max-width: 36rem;
+		font-size: 1.05rem;
+		line-height: 1.7;
+		color: var(--muted-foreground);
 	}
 
-	.project-preview-image {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		object-position: center top;
-		border-radius: 1rem;
-		box-shadow: var(--shadow-medium);
-	}
-
-	.project-visual.split {
-		grid-template-columns: 8rem 1fr;
-		gap: 1rem;
-		align-items: end;
-	}
-
-	.project-visual.split .project-preview-image {
-		grid-column: 1 / -1;
-	}
-
-	.ui-window,
-	.ui-phone,
-	.ui-board {
-		background: var(--card);
-		border: 1.5px solid color-mix(in srgb, var(--foreground) 10%, transparent);
-		box-shadow: var(--shadow-medium);
-	}
-
-	.ui-window {
-		width: 100%;
-		height: 13.75rem;
-		border-radius: 0.95rem;
-		overflow: hidden;
-	}
-
-	.ui-window.compact {
-		height: 13rem;
-	}
-
-	.ui-topbar {
-		height: 1rem;
-		background: color-mix(in srgb, var(--foreground) 86%, #2f3640 14%);
-	}
-
-	.ui-window-body {
-		display: grid;
-		grid-template-columns: 5rem 1fr;
-		height: calc(100% - 1rem);
-	}
-
-	.ui-column {
-		background: color-mix(in srgb, var(--card) 72%, var(--background) 28%);
-		border-right: 1px solid color-mix(in srgb, var(--border) 88%, var(--background) 12%);
-	}
-
-	.ui-content,
-	.ui-content.tight {
-		padding: 0.9rem;
-		display: grid;
-		align-content: start;
-		gap: 0.65rem;
-	}
-
-	.ui-line,
-	.ui-panel,
-	.ui-phone-card,
-	.ui-photo,
-	.ui-board-card,
-	.ui-table-row,
-	.ui-search {
-		border-radius: 0.7rem;
-	}
-
-	.ui-line {
-		height: 0.8rem;
-		background: color-mix(in srgb, var(--border) 85%, var(--background) 15%);
-	}
-
-	.ui-line.short {
-		width: 56%;
-	}
-
-	.ui-panel.large {
-		height: 4.8rem;
-		background: color-mix(in srgb, var(--muted) 60%, var(--card) 40%);
-		border: 1px solid color-mix(in srgb, var(--border) 90%, var(--background) 10%);
-	}
-
-	.ui-panel-row {
-		display: grid;
-		grid-template-columns: repeat(2, minmax(0, 1fr));
-		gap: 0.7rem;
-	}
-
-	.ui-panel {
-		height: 3.4rem;
-		background: color-mix(in srgb, var(--muted) 72%, var(--card) 28%);
-		border: 1px solid color-mix(in srgb, var(--border) 90%, var(--background) 10%);
-	}
-
-	.ui-phone {
-		width: 7.25rem;
-		height: 13rem;
-		padding: 0.65rem 0.55rem;
-		border-radius: 1.2rem;
-		display: grid;
-		align-content: start;
-		gap: 0.45rem;
-	}
-
-	.ui-phone.tall {
-		width: 7.5rem;
-		height: 14.3rem;
-	}
-
-	.ui-phone-notch {
-		width: 2.4rem;
-		height: 0.45rem;
-		margin: 0 auto 0.2rem;
-		border-radius: 999px;
-		background: color-mix(in srgb, var(--foreground) 92%, #232323 8%);
-	}
-
-	.ui-phone-line {
-		height: 0.68rem;
-		background: color-mix(in srgb, var(--border) 76%, var(--background) 24%);
-	}
-
-	.ui-phone-line.short {
-		width: 60%;
-	}
-
-	.ui-phone-card {
-		height: 2.35rem;
-		background: color-mix(in srgb, var(--muted) 52%, var(--card) 48%);
-		border: 1px solid color-mix(in srgb, var(--border) 88%, var(--background) 12%);
-	}
-
-	.ui-phone-card.slim {
-		height: 1.5rem;
-	}
-
-	.ui-photo {
-		height: 4.6rem;
-		background: linear-gradient(135deg, #dce7f5 0%, #f5dcc9 100%);
-		border: 1px solid color-mix(in srgb, var(--border) 88%, var(--background) 12%);
-	}
-
-	.phones {
+	.cta-actions {
 		display: flex;
-		gap: 0.8rem;
-		align-items: end;
 		justify-content: center;
+		margin-top: 1.5rem;
 	}
 
-	.ui-table-row {
-		height: 1.6rem;
-		background: color-mix(in srgb, var(--muted) 56%, var(--card) 44%);
-		border: 1px solid color-mix(in srgb, var(--border) 88%, var(--background) 12%);
-	}
-
-	.ui-board {
-		width: 100%;
-		height: 14.5rem;
-		padding: 0.9rem;
-		border-radius: 1rem;
-		display: grid;
-		gap: 0.8rem;
-	}
-
-	.ui-board-header {
-		display: flex;
-		justify-content: space-between;
+	.cta-btn {
+		display: inline-flex;
 		align-items: center;
-		gap: 0.8rem;
+		gap: 0.6rem;
+		min-height: 48px;
+		padding: 0.85rem 1.3rem;
+		border: 1px solid var(--control-border);
+		border-radius: 999px;
+		font-size: 1rem;
+		font-weight: 700;
+		color: inherit;
+		text-decoration: none;
+		transition:
+			transform 120ms ease,
+			border-color 120ms ease,
+			background-color 120ms ease;
+		background: var(--foreground);
+		color: var(--background);
+		border-color: var(--foreground);
 	}
 
-	.ui-search {
-		height: 1.45rem;
-		flex: 1;
-		background: color-mix(in srgb, var(--muted) 56%, var(--card) 44%);
-		border: 1px solid color-mix(in srgb, var(--border) 88%, var(--background) 12%);
+	.cta-btn:hover,
+	.cta-btn:focus-visible {
+		transform: translateY(-2px);
 	}
 
-	.ui-avatar {
-		width: 1.5rem;
-		height: 1.5rem;
-		border-radius: 50%;
-		background: color-mix(in srgb, var(--border) 84%, var(--background) 16%);
-	}
+	@media (max-width: 860px) {
+		.hero-layout {
+			grid-template-columns: 1fr;
+			gap: 2rem;
+		}
 
-	.ui-board-grid {
-		display: grid;
-		grid-template-columns: 1.2fr 1fr 1fr;
-		gap: 0.7rem;
-		height: 100%;
-	}
+		.hero-visual {
+			order: -1;
+		}
 
-	.ui-board-card {
-		min-height: 4rem;
-		background: color-mix(in srgb, var(--muted) 52%, var(--card) 48%);
-		border: 1px solid color-mix(in srgb, var(--border) 88%, var(--background) 12%);
-	}
+		.hero-logo {
+			width: min(100%, 10rem);
+		}
 
-	.ui-board-card.feature {
-		grid-row: span 2;
-	}
-
-	@media (max-width: 980px) {
-		.projects-grid {
+		.featured-grid {
 			grid-template-columns: 1fr;
 		}
 	}
@@ -441,47 +402,19 @@ import { projects } from '../data/projects';
 		}
 
 		.hero {
-			padding: 4rem 0 4.5rem;
+			padding: 3rem 0 3rem;
 		}
 
-		.hero-text,
-		.hero-note {
+		.hero-text {
 			font-size: 1.05rem;
 		}
 
-		.project-card {
+		.featured-card {
 			padding: 1.25rem;
-			border-radius: 1.15rem;
 		}
 
-		.project-title {
-			min-height: auto;
-		}
-
-		.project-visual {
-			height: auto;
-			overflow: visible;
-			align-items: start;
-		}
-
-		.project-visual.split {
-			grid-template-columns: 6.5rem 1fr;
-		}
-
-		.project-preview-image {
-			height: auto;
-			object-fit: initial;
-			object-position: initial;
-		}
-
-		.ui-phone,
-		.ui-phone.tall {
-			width: 6.3rem;
-			height: 12.3rem;
-		}
-
-		.desktop-hide-small {
-			display: none;
+		.cta-card {
+			padding: 2rem 1.5rem;
 		}
 	}
 </style>

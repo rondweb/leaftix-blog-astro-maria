@@ -8,6 +8,7 @@ This file helps future coding agents and contributors work safely in this reposi
 - Package manager: npm.
 - Node requirement: `>=22.12.0`.
 - Output: static site build via Astro.
+- Domain: https://blog.leaftix.com
 
 ## Common Commands
 
@@ -26,8 +27,8 @@ This file helps future coding agents and contributors work safely in this reposi
 
 ## Working Notes
 
-- Theme state is stored in `localStorage` under `maria-theme`.
-- Cookie consent state is stored in `localStorage` under `maria-cookie-consent`.
+- Theme state is stored in `localStorage` under `leaftix-theme`.
+- Cookie consent state is stored in `localStorage` under `leaftix-cookie-consent`.
 
 ## Change Guidelines
 

@@ -1,11 +1,14 @@
 <svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="1200" height="630" fill="#F4F4F1"/>
-  <rect x="56" y="56" width="1088" height="518" rx="28" fill="#FFFFFF" stroke="#D9D9D9" stroke-width="2"/>
-  <rect x="96" y="96" width="164" height="164" rx="24" fill="#171717"/>
-  <text x="178" y="208" text-anchor="middle" fill="#FFFFFF" font-family="Manrope, Arial, sans-serif" font-size="76" font-weight="800">M</text>
-  <text x="302" y="188" fill="#171717" font-family="Manrope, Arial, sans-serif" font-size="32" font-weight="700" letter-spacing="-0.03em">Maria</text>
-  <text x="96" y="352" fill="#171717" font-family="Manrope, Arial, sans-serif" font-size="72" font-weight="800" letter-spacing="-0.05em">
-    <tspan x="96" dy="0">UX Designer Portfolio</tspan>
-    <tspan x="96" dy="82">built with Astro.</tspan>
+  <rect width="1200" height="630" fill="#0D1014"/>
+  <rect x="56" y="56" width="1088" height="518" rx="28" fill="#151A21" stroke="#2A313C" stroke-width="2"/>
+  <rect x="96" y="96" width="164" height="164" rx="24" fill="#2A6B3D"/>
+  <text x="178" y="208" text-anchor="middle" fill="#FFFFFF" font-family="Manrope, Arial, sans-serif" font-size="76" font-weight="800">L</text>
+  <text x="302" y="188" fill="#F5F7FB" font-family="Manrope, Arial, sans-serif" font-size="32" font-weight="700" letter-spacing="-0.03em">Leaftix Blog</text>
+  <text x="96" y="352" fill="#F5F7FB" font-family="Manrope, Arial, sans-serif" font-size="64" font-weight="800" letter-spacing="-0.05em">
+    <tspan x="96" dy="0">AI, Autonomous Governance</tspan>
+    <tspan x="96" dy="74">& Sustainable Food Production</tspan>
+  </text>
+  <text x="96" y="470" fill="#A3ACB9" font-family="Manrope, Arial, sans-serif" font-size="22" font-weight="500" letter-spacing="-0.01em">
+    Multi-agent AI · Digital Twin · Edge-native Architecture
   </text>
 </svg>

@@ -4,8 +4,8 @@ import SiteHeader from '../components/SiteHeader.astro';
 ---
 
 <Layout
-	title="Cookie Policy | Maria"
-	description="Cookie policy and consent settings for the Maria Astro portfolio theme."
+	title="Cookie Policy | Leaftix Blog"
+	description="Cookie policy and consent settings for the Leaftix Blog."
 	showFooterCta={false}
 	noindex={true}
 >
@@ -18,17 +18,17 @@ import SiteHeader from '../components/SiteHeader.astro';
 			<header class="legal-header">
 				<h1>Cookie Policy</h1>
 				<p class="legal-intro">
-					This page explains what the Maria theme stores in the browser, how visitor consent is
+					This page explains what the Leaftix Blog stores in the browser, how visitor consent is
 					saved, and how optional categories like analytics or marketing should be handled.
 				</p>
-				<p class="legal-updated">Last updated: May 31, 2026</p>
+				<p class="legal-updated">Last updated: June 30, 2026</p>
 			</header>
 
 			<article class="legal-content">
 				<section>
-					<h2>What This Theme Stores</h2>
+					<h2>What This Site Stores</h2>
 					<p>
-						By default, the theme stores two small browser-based preference records on the
+						By default, the site stores two small browser-based preference records on the
 						visitor's device: the selected color theme and the cookie consent preferences.
 					</p>
 					<p>
@@ -44,9 +44,9 @@ import SiteHeader from '../components/SiteHeader.astro';
 						analytics and marketing categories.
 					</p>
 					<p>
-						In the Maria theme, analytics and marketing are placeholders until you connect real
+						In the Leaftix Blog, analytics and marketing are placeholders until we connect real
 						tools. The banner and modal still work now, so those tools can be gated behind
-						consent when you add them later.
+						consent when we add them later.
 					</p>
 				</section>
 
@@ -56,7 +56,7 @@ import SiteHeader from '../components/SiteHeader.astro';
 						<article class="cookie-record">
 							<div class="cookie-record-top">
 								<div>
-									<h3><code>maria-theme</code></h3>
+									<h3><code>leaftix-theme</code></h3>
 									<p class="cookie-record-label">Local storage</p>
 								</div>
 								<span class="cookie-badge">Essential</span>
@@ -69,7 +69,7 @@ import SiteHeader from '../components/SiteHeader.astro';
 						<article class="cookie-record">
 							<div class="cookie-record-top">
 								<div>
-									<h3><code>maria-cookie-consent</code></h3>
+									<h3><code>leaftix-cookie-consent</code></h3>
 									<p class="cookie-record-label">Local storage</p>
 								</div>
 								<span class="cookie-badge">Essential</span>
@@ -93,7 +93,7 @@ import SiteHeader from '../components/SiteHeader.astro';
 						<a
 							href="#"
 							class="cookie-inline-link"
-							onclick="window.dispatchEvent(new CustomEvent('maria:openCookieConsent')); return false;"
+							onclick="window.dispatchEvent(new CustomEvent('leaftix:openCookieConsent')); return false;"
 						>
 							cookie preferences modal
 						</a>.
@@ -103,11 +103,11 @@ import SiteHeader from '../components/SiteHeader.astro';
 				<section>
 					<h2>Using Consent in Custom Scripts</h2>
 					<p>
-						The theme exposes <code>window.mariaCookieConsent</code> so optional scripts can
+						The site exposes <code>window.leaftixCookieConsent</code> so optional scripts can
 						check whether analytics or marketing is allowed before loading.
 					</p>
 					<p>
-						It also emits a <code>maria:cookieConsentChanged</code> browser event whenever the
+						It also emits a <code>leaftix:cookieConsentChanged</code> browser event whenever the
 						visitor saves new choices.
 					</p>
 				</section>

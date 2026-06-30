@@ -1,5 +1,5 @@
 (function () {
-  const KEY = 'maria-cookie-consent';
+  const KEY = 'leaftix-cookie-consent';
   const VERSION = '1';
   let injected = false;
 
@@ -24,7 +24,7 @@
       };
       localStorage.setItem(KEY, JSON.stringify(payload));
       applyConsentState(payload);
-      window.dispatchEvent(new CustomEvent('maria:cookieConsentChanged', { detail: payload }));
+      window.dispatchEvent(new CustomEvent('leaftix:cookieConsentChanged', { detail: payload }));
     } catch {}
   }
 
@@ -250,8 +250,8 @@
     openPreferences: showModal,
   };
 
-  window.mariaCookieConsent = api;
-  window.addEventListener('maria:openCookieConsent', showModal);
+  window.leaftixCookieConsent = api;
+  window.addEventListener('leaftix:openCookieConsent', showModal);
 
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init, { once: true });

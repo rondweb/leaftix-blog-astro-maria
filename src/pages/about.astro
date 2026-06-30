@@ -1,13 +1,12 @@
 ---
-import { Image } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import SiteHeader from '../components/SiteHeader.astro';
-import portraitImage from '../assets/images/maria.webp';
+import { siteConfig } from '../config/site';
 ---
 
 <Layout
-	title="About Maria | Astro Theme for UI/UX Designer Portfolios"
-	description="About page for the Maria Astro theme, built for UI/UX designer portfolios, product design stories, and case study-driven personal sites."
+	title={`About ${siteConfig.name} | AI, Autonomous Governance & Sustainable Food Production`}
+	description={`${siteConfig.name} develops AI-based autonomous governance systems for sustainable food production. Our flagship product, ${siteConfig.name} GaiaOS, combines multi-agent architecture, Digital Twin and edge computing for proactive governance of agricultural environments.`}
 >
 	<a class="skip-link" href="#main-content">Skip to content</a>
 
@@ -19,22 +18,23 @@ import portraitImage from '../assets/images/maria.webp';
 				<p class="eyebrow">About</p>
 				<div class="hero-layout">
 					<div class="hero-copy">
-						<h1 class="display-title">I design products that make complicated things feel clearer and easier to use.</h1>
+						<h1 class="display-title">The future of sustainable production will not be monitored. It will be governed.</h1>
 						<p class="hero-text">
-							I'm Maria, a UX designer focused on turning dense workflows, fuzzy product
-							requirements, and overloaded interfaces into experiences people can navigate
-							with confidence.
+							Leaftix develops AI-based autonomous governance systems for sustainable food
+							production. Our flagship product, Leaftix GaiaOS, combines multi-agent
+							architecture, Digital Twin and edge computing for proactive governance of
+							agricultural environments — from monitoring to autonomous decision-making.
 						</p>
 					</div>
-					<div class="hero-portrait-wrap">
-						<Image
-							class="hero-portrait"
-							src={portraitImage}
-							alt="Portrait of Maria"
+					<div class="hero-logo-wrap">
+						<img
+							class="hero-logo"
+							src="/leaftix-logo.png"
+							alt="Leaftix Logo — Green leaf symbol representing sustainable agriculture technology"
+							width="320"
+							height="416"
 							loading="eager"
 							decoding="async"
-							widths={[320, 480, 640]}
-							sizes="(max-width: 980px) 100vw, 32vw"
 						/>
 					</div>
 				</div>
@@ -42,54 +42,62 @@ import portraitImage from '../assets/images/maria.webp';
 
 			<section class="editorial-section">
 				<div class="section-rail">
-					<p class="section-kicker">Background</p>
+					<p class="section-kicker">Our Mission</p>
 				</div>
 				<div class="story-block">
 					<p>
-						Over the last 10+ years, I've worked across SaaS, operations, service platforms,
-						and internal tools where the design challenge is rarely just about making something
-						look good. More often, it's about helping people understand what matters, what to
-						do next, and why the product should feel trustworthy in the first place.
+						A manifesto for planetary resilience, driven by artificial intelligence and
+						absolute data precision. Leaftix was built on the conviction that the future
+						of sustainable production will not be monitored — it will be governed by
+						autonomous intelligence.
 					</p>
 					<p>
-						I sit somewhere between product thinking, systems design, and interface craft. I
-						care about hierarchy, pacing, micro-decisions, and the kind of details that make
-						an experience feel intentional rather than merely complete.
+						We believe that the complexity of climate risk demands a new kind of
+						infrastructure: one that connects environmental sensors, edge nodes and
+						autonomous machinery into a single, cohesive intelligence capable of
+						anticipating and mitigating threats before they impact production.
 					</p>
 				</div>
 			</section>
 
 			<section class="editorial-section">
 				<div class="section-rail">
-					<p class="section-kicker">How I Work</p>
+					<p class="section-kicker">What is Leaftix GaiaOS?</p>
 				</div>
 				<div class="story-block">
 					<p>
-						I work best in the messy middle: when the requirements are incomplete, the product
-						has started to sprawl, and the team needs someone to create clarity without
-						oversimplifying the problem.
+						Leaftix GaiaOS is not just a control panel. It is the underlying logical
+						layer connecting environmental sensors, edge nodes and autonomous machinery
+						into a single, cohesive intelligence, capable of anticipating and mitigating
+						climate risk before it impacts production.
 					</p>
 					<p>
-						That usually means stepping back to understand the structure of the experience,
-						deciding what deserves attention first, and then building a visual system strong
-						enough to support that logic all the way through the final UI.
+						It is a multi-agent cognitive infrastructure that ingests terabytes of
+						environmental data in real time — including climate patterns, soil moisture,
+						temperature gradients, market data and IoT sensor inputs — feeding a
+						hierarchical AI system that enables proactive governance at every level.
 					</p>
 				</div>
 			</section>
 
 			<section class="editorial-section">
 				<div class="section-rail">
-					<p class="section-kicker">Focus</p>
+					<p class="section-kicker">Architecture</p>
 				</div>
 				<div class="story-block">
 					<p>
-						I'm especially interested in dashboards, workflow tools, AI-assisted interfaces,
-						and products where reducing friction has a measurable impact on how confident people
-						feel using the system.
+						Leaftix GaiaOS uses a tripartite mythological architecture. The Olympus layer
+						acts as the sovereignty council with Gaia (the Supreme Orchestrator), Athena
+						(the Surveillance Strategist) and Hermes (the Capital Strategist) — resolving
+						conflicts, routing tasks and maintaining strategic vision. Terra is the
+						manifestation interface and physical execution layer. Hades is the material
+						intelligence engine, responsible for deep data mining and pattern discovery.
 					</p>
 					<p>
-						If something is too dense, too noisy, or too hard to follow, that's usually where I
-						can do my best work.
+						This structure ensures robust hierarchical and multi-agent governance,
+						delivering proven results: a 34% reduction in energy consumption per gram of
+						biomass and a Digital Twin variance under 2%, setting a new standard for
+						precision in agricultural intelligence.
 					</p>
 				</div>
 			</section>
@@ -150,19 +158,17 @@ import portraitImage from '../assets/images/maria.webp';
 		margin-top: 1.5rem;
 	}
 
-	.hero-portrait-wrap {
+	.hero-logo-wrap {
 		display: flex;
 		justify-content: flex-end;
 		align-self: start;
 		padding-top: 0.35rem;
 	}
 
-	.hero-portrait {
-		width: min(100%, 20rem);
+	.hero-logo {
+		width: min(100%, 16rem);
 		height: auto;
 		display: block;
-		border-radius: 1.5rem;
-		box-shadow: 0 18px 40px rgba(23, 23, 23, 0.08);
 	}
 
 	.editorial-section {
@@ -198,7 +204,7 @@ import portraitImage from '../assets/images/maria.webp';
 			max-width: 42rem;
 		}
 
-		.hero-portrait-wrap {
+		.hero-logo-wrap {
 			justify-content: flex-start;
 			padding-top: 0;
 		}
@@ -223,8 +229,8 @@ import portraitImage from '../assets/images/maria.webp';
 			font-size: 1.05rem;
 		}
 
-		.hero-portrait {
-			width: min(100%, 16rem);
+		.hero-logo {
+			width: min(100%, 12rem);
 		}
 	}
 </style>

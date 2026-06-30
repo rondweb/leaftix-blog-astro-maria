@@ -20,36 +20,42 @@ export type SiteConfig = {
 	socialLinks: SiteLink[];
 };
 
-const defaultSiteUrl = 'https://maria-lake.vercel.app';
+const defaultSiteUrl = 'https://leaftix.com';
 const envSiteUrl = process.env.SITE_URL ?? process.env.PUBLIC_SITE_URL;
 const normalizedSiteUrl = (envSiteUrl || defaultSiteUrl).replace(/\/+$/, '');
 
 export const siteConfig: SiteConfig = {
-	name: 'Maria',
-	title: 'Maria | Astro Theme for UI/UX Designer Portfolios',
+	name: 'Leaftix Blog',
+	title: 'Leaftix Blog | AI, Autonomous Governance & Sustainable Food Production',
 	description:
-		'A clean Astro theme for UI/UX designer portfolios, case studies, and modern product design presentations.',
+		'Leaftix GaiaOS is Leaftix\'s autonomous governance operating system for sustainable food production. Multi-agent AI, Digital Twin, edge-native architecture — from monitoring to proactive governance.',
 	// Set SITE_URL or PUBLIC_SITE_URL to keep canonicals, robots.txt, and the sitemap aligned in each environment.
 	siteUrl: normalizedSiteUrl,
-	email: 'hello@maria.com',
+	email: 'info@leaftix.com',
 	locale: 'en-US',
-	authorName: 'Maria',
-	authorRole: 'UX Designer',
+	authorName: 'Ronaldo Andrade',
+	authorRole: 'CEO',
 	keywords: [
-		'Astro UI UX portfolio theme',
-		'UI UX designer portfolio template',
-		'Astro portfolio template',
-		'product designer portfolio theme',
-		'case study portfolio theme',
+		'Leaftix GaiaOS',
+		'Leaftix',
+		'artificial intelligence agriculture',
+		'autonomous governance',
+		'sustainable production',
+		'digital twin',
+		'agtech',
+		'precision farming',
+		'food security',
+		'AI agriculture',
+		'sustainable food production',
+		'autonomous governance',
+		'edge computing agriculture',
 	],
-	ogImage: '/og-image.svg',
+	ogImage: 'https://leaftix.com/og-image.png',
 	navLinks: [
-		{ href: '/work', label: 'Work' },
+		{ href: '/blog', label: 'Blog' },
 		{ href: '/about', label: 'About' },
-		{ href: '/resume', label: 'Resume' },
 	],
 	extraPages: [
-		{ href: '/work/nextpoint', label: 'Case Study' },
 		{ href: '/cookies', label: 'Cookies' },
 		{ href: '/privacy', label: 'Privacy' },
 		{ href: '/terms', label: 'Terms' },
@@ -61,7 +67,8 @@ export const siteConfig: SiteConfig = {
 		{ href: '/terms', label: 'Terms' },
 	],
 	socialLinks: [
-		{ href: 'https://www.linkedin.com/', label: 'LinkedIn' },
-		{ href: 'https://dribbble.com/', label: 'Dribbble' },
+		{ href: 'https://www.linkedin.com/company/leaftix/', label: 'LinkedIn' },
+		{ href: 'https://www.facebook.com/profile.php?id=61560266627242', label: 'Facebook' },
+		{ href: 'https://www.instagram.com/leaftixagrotech/', label: 'Instagram' },
 	],
 };

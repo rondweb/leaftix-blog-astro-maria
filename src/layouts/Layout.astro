@@ -88,7 +88,7 @@ const schemaData =
 		<script type="application/ld+json" set:html={JSON.stringify(schemaData)}></script>
 		<script is:inline>
 			(() => {
-				const storageKey = 'maria-theme';
+				const storageKey = 'leaftix-theme';
 				const root = document.documentElement;
 				const storedTheme = localStorage.getItem(storageKey);
 				const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
@@ -104,7 +104,7 @@ const schemaData =
 		<script src="/cookie-consent.js" defer></script>
 		<script is:inline>
 			(() => {
-				const storageKey = 'maria-theme';
+				const storageKey = 'leaftix-theme';
 				const root = document.documentElement;
 				const toggle = document.querySelector('[data-theme-toggle]');
 				if (!toggle) {
