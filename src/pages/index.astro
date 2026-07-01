@@ -2,6 +2,10 @@
 import Layout from '../layouts/Layout.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import { siteConfig } from '../config/site';
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
 <Layout
@@ -15,100 +19,65 @@ import { siteConfig } from '../config/site';
 
 		<main id="main-content">
 			<section class="hero" id="top">
-				<div class="hero-layout">
-					<div class="hero-copy">
-						<h1 class="display-title">The future of sustainable food production is autonomous.</h1>
-						<p class="hero-text">
-							Welcome to the Leaftix Blog — where we explore the intersection of artificial
-							intelligence, autonomous governance, and sustainable agriculture. Discover how
-							multi-agent AI, Digital Twins, and edge-native architectures are transforming
-							food production from reactive monitoring to proactive governance.
-						</p>
-						<div class="hero-actions">
-							<a class="hero-btn" href="/blog">
-								<span>Read the Blog</span>
-								<span aria-hidden="true">-></span>
-							</a>
-							<a class="hero-btn hero-btn-outline" href="/about">
-								<span>About Leaftix</span>
-								<span aria-hidden="true">-></span>
-							</a>
-						</div>
-					</div>
-					<div class="hero-visual">
-						<img
-							class="hero-logo"
-							src="/leaftix-logo.png"
-							alt="Leaftix Logo — Green leaf symbol representing sustainable agriculture technology"
-							width="320"
-							height="416"
-							loading="eager"
-							decoding="async"
-						/>
+				<div class="hero-copy">
+					<h1 class="display-title">The future of sustainable food production is autonomous.</h1>
+					<p class="hero-text">
+						Welcome to the Leaftix Blog — where we explore the intersection of artificial
+						intelligence, autonomous governance, and sustainable agriculture. Discover how
+						multi-agent AI, Digital Twins, and edge-native architectures are transforming
+						food production from reactive monitoring to proactive governance.
+					</p>
+					<div class="hero-actions">
+						<a class="hero-btn" href="/blog">
+							<span>Read the Blog</span>
+							<span aria-hidden="true">-></span>
+						</a>
+						<a class="hero-btn hero-btn-outline" href="/about">
+							<span>About Leaftix</span>
+							<span aria-hidden="true">-></span>
+						</a>
 					</div>
 				</div>
 			</section>
 
-			<section class="featured-section" id="featured">
-				<div class="featured-header">
-					<p class="section-eyebrow">Featured Topics</p>
-					<h2>Exploring the future of AI-governed agriculture</h2>
+			<section class="projects" id="work">
+				<div class="projects-header">
+					<p class="section-eyebrow">Latest Posts</p>
+					<h2>Recent articles from the blog</h2>
 				</div>
 
-				<div class="featured-grid">
-					<article class="featured-card">
-						<div class="featured-card-icon" aria-hidden="true">
-							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-								<path d="M12 2a10 10 0 1 0 10 10"></path>
-								<path d="M12 6v6l4 2"></path>
-							</svg>
-						</div>
-						<h3 class="featured-card-title">Autonomous Governance</h3>
-						<p class="featured-card-text">
-							How multi-agent AI systems are enabling real-time, proactive decision-making in agricultural environments.
-						</p>
-					</article>
+				<div class="projects-grid">
+					{sortedPosts.length === 0 && (
+						<p class="empty-state">No posts yet. Check back soon!</p>
+					)}
 
-					<article class="featured-card">
-						<div class="featured-card-icon" aria-hidden="true">
-							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-								<rect x="2" y="3" width="20" height="14" rx="2"></rect>
-								<line x1="8" y1="21" x2="16" y2="21"></line>
-								<line x1="12" y1="17" x2="12" y2="21"></line>
-							</svg>
-						</div>
-						<h3 class="featured-card-title">Digital Twin Technology</h3>
-						<p class="featured-card-text">
-							Building virtual replicas of agricultural systems to simulate, predict, and optimize production outcomes.
-						</p>
-					</article>
+					{sortedPosts.map((post, idx) => {
+						const colors = ['lime', 'cyan', 'lavender', 'mint'];
+						const color = colors[idx % colors.length];
+						const image = post.data.image?.url;
+						const href = `/blog/${post.id.replace(/\.(md|mdx)$/, '')}`;
 
-					<article class="featured-card">
-						<div class="featured-card-icon" aria-hidden="true">
-							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-								<circle cx="12" cy="12" r="10"></circle>
-								<path d="M12 6v6l4 2"></path>
-							</svg>
-						</div>
-						<h3 class="featured-card-title">Edge Architecture</h3>
-						<p class="featured-card-text">
-							Deploying intelligence at the edge for real-time sensor processing, low-latency decisions, and resilient operations.
-						</p>
-					</article>
-
-					<article class="featured-card">
-						<div class="featured-card-icon" aria-hidden="true">
-							<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-								<path d="M12 2L2 7l10 5 10-5-10-5z"></path>
-								<path d="M2 17l10 5 10-5"></path>
-								<path d="M2 12l10 5 10-5"></path>
-							</svg>
-						</div>
-						<h3 class="featured-card-title">Sustainable Production</h3>
-						<p class="featured-card-text">
-							Reducing resource consumption while increasing yield through precision agriculture and AI-driven optimization.
-						</p>
-					</article>
+						return (
+							<a class="project-link" href={href}>
+								<article class={`project-card ${color}`}>
+									<div class="project-header">
+										<p class="project-name">{post.data.author}</p>
+									</div>
+									<h2 class="project-title">{post.data.title}</h2>
+									{image && (
+										<div class="project-visual desktop">
+											<img
+												src={image}
+												alt={post.data.image?.alt || post.data.title}
+												loading={idx === 0 ? 'eager' : 'lazy'}
+												decoding="async"
+											/>
+										</div>
+									)}
+								</article>
+							</a>
+						);
+					})}
 				</div>
 			</section>
 
@@ -157,13 +126,6 @@ import { siteConfig } from '../config/site';
 		padding: 5rem 0 4rem;
 	}
 
-	.hero-layout {
-		display: grid;
-		grid-template-columns: minmax(0, 1.4fr) minmax(14rem, 18rem);
-		gap: 2.5rem;
-		align-items: center;
-	}
-
 	.hero-copy {
 		max-width: 52rem;
 	}
@@ -173,6 +135,11 @@ import { siteConfig } from '../config/site';
 		font-weight: 800;
 		letter-spacing: -0.05em;
 		color: var(--foreground);
+	}
+
+	.display-title {
+		font-size: clamp(2.4rem, 4vw, 3.8rem);
+		line-height: 1.03;
 	}
 
 	.hero-text {
@@ -228,30 +195,18 @@ import { siteConfig } from '../config/site';
 		border-color: var(--border-strong);
 	}
 
-	.hero-visual {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-	}
-
-	.hero-logo {
-		width: min(100%, 16rem);
-		height: auto;
-		display: block;
-	}
-
-	/* Featured Section */
-	.featured-section {
-		padding: 4rem 0;
+	/* Projects / Latest Posts */
+	.projects {
+		padding: 4rem 0 2rem;
 		border-top: 1px solid var(--border);
 	}
 
-	.featured-header {
+	.projects-header {
 		max-width: 42rem;
 		margin-bottom: 2.5rem;
 	}
 
-	.featured-header h2 {
+	.projects-header h2 {
 		margin: 0.85rem 0 0;
 		font-size: clamp(1.8rem, 2.6vw, 2.4rem);
 		font-weight: 800;
@@ -260,59 +215,80 @@ import { siteConfig } from '../config/site';
 		color: var(--foreground);
 	}
 
-	.featured-grid {
+	.projects-grid {
 		display: grid;
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 		gap: 1.5rem;
 	}
 
-	.featured-card {
+	.project-link {
+		text-decoration: none;
+		color: inherit;
+	}
+
+	.project-card {
 		padding: 1.5rem;
-		border: 1px solid var(--border);
-		border-radius: 1.15rem;
+		border-radius: 1.25rem;
 		background: var(--card);
+		border: 1px solid var(--border);
+		display: flex;
+		flex-direction: column;
+		gap: 0.75rem;
 		transition:
 			transform 140ms ease,
 			box-shadow 140ms ease;
 	}
 
-	.featured-card:hover {
+	.project-card:hover {
 		transform: translateY(-3px);
 		box-shadow: var(--shadow-soft);
 	}
 
-	.featured-card-icon {
-		width: 2.5rem;
-		height: 2.5rem;
-		display: grid;
-		place-items: center;
-		border-radius: 0.75rem;
-		background: var(--muted);
-		color: var(--foreground);
-		margin-bottom: 1rem;
+	.project-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
 	}
 
-	.featured-card-icon svg {
-		width: 1.3rem;
-		height: 1.3rem;
-	}
-
-	.featured-card-title {
-		margin: 0 0 0.5rem;
-		font-size: 1.1rem;
-		font-weight: 700;
-		letter-spacing: -0.02em;
-		color: var(--foreground);
-	}
-
-	.featured-card-text {
+	.project-name {
 		margin: 0;
-		font-size: 0.98rem;
-		line-height: 1.65;
+		font-family: var(--font-mono);
+		font-size: 0.82rem;
+		font-weight: 600;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
 		color: var(--muted-foreground);
 	}
 
-	/* CTA Section */
+	.project-title {
+		margin: 0;
+		font-size: clamp(1.2rem, 1.6vw, 1.45rem);
+		font-weight: 800;
+		letter-spacing: -0.03em;
+		line-height: 1.12;
+		color: var(--foreground);
+	}
+
+	.project-visual {
+		margin-top: 0.5rem;
+	}
+
+	.project-visual img {
+		width: 100%;
+		height: auto;
+		border-radius: 0.9rem;
+		display: block;
+	}
+
+	.empty-state {
+		grid-column: 1 / -1;
+		padding: 2rem 0;
+		text-align: center;
+		color: var(--muted-foreground);
+		font-size: 1.05rem;
+	}
+
+	/* CTA */
 	.cta-section {
 		padding: 3rem 0 2rem;
 	}
@@ -377,20 +353,7 @@ import { siteConfig } from '../config/site';
 	}
 
 	@media (max-width: 860px) {
-		.hero-layout {
-			grid-template-columns: 1fr;
-			gap: 2rem;
-		}
-
-		.hero-visual {
-			order: -1;
-		}
-
-		.hero-logo {
-			width: min(100%, 10rem);
-		}
-
-		.featured-grid {
+		.projects-grid {
 			grid-template-columns: 1fr;
 		}
 	}
@@ -409,7 +372,7 @@ import { siteConfig } from '../config/site';
 			font-size: 1.05rem;
 		}
 
-		.featured-card {
+		.project-card {
 			padding: 1.25rem;
 		}
 

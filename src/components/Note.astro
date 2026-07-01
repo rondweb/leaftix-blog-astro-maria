@@ -1,0 +1,87 @@
+---
+export interface Props {
+	type?: 'info' | 'tip' | 'warning' | 'success';
+}
+
+const { type = 'info' } = Astro.props;
+
+const styles: Record<string, Record<string, string>> = {
+	info: {
+		borderColor: '#5869d8',
+		bgColor: 'color-mix(in srgb, #5869d8 8%, var(--card) 92%)',
+		iconColor: '#5869d8',
+		icon: 'i',
+	},
+	tip: {
+		borderColor: '#178b54',
+		bgColor: 'color-mix(in srgb, #178b54 8%, var(--card) 92%)',
+		iconColor: '#178b54',
+		icon: '✓',
+	},
+	warning: {
+		borderColor: '#d97706',
+		bgColor: 'color-mix(in srgb, #d97706 8%, var(--card) 92%)',
+		iconColor: '#d97706',
+		icon: '⚠',
+	},
+	success: {
+		borderColor: '#059669',
+		bgColor: 'color-mix(in srgb, #059669 8%, var(--card) 92%)',
+		iconColor: '#059669',
+		icon: '✦',
+	},
+};
+
+const s = styles[type] || styles.info;
+---
+
+<div class="note" style={`border-left: 4px solid ${s.borderColor}; background: ${s.bgColor};`}>
+	<span class="note-icon" style={`color: ${s.iconColor};`} aria-hidden="true">{s.icon}</span>
+	<div class="note-content">
+		<slot />
+	</div>
+</div>
+
+<style>
+	.note {
+		display: flex;
+		gap: 0.75rem;
+		padding: 1rem 1.15rem;
+		margin: 1.5rem 0;
+		border-radius: 0.75rem;
+		font-size: 0.98rem;
+		line-height: 1.65;
+	}
+
+	.note-icon {
+		flex: 0 0 1.25rem;
+		font-size: 1.1rem;
+		font-weight: 700;
+		line-height: 1.5;
+		text-align: center;
+	}
+
+	.note-content {
+		flex: 1;
+		min-width: 0;
+	}
+
+	.note-content :global(p) {
+		margin: 0;
+	}
+
+	.note-content :global(p + p) {
+		margin-top: 0.5rem;
+	}
+
+	.note-content :global(strong) {
+		font-weight: 700;
+	}
+
+	.note-content :global(code) {
+		font-size: 0.92em;
+		padding: 0.15rem 0.4rem;
+		border-radius: 0.4rem;
+		background: color-mix(in srgb, var(--border) 40%, transparent);
+	}
+</style>

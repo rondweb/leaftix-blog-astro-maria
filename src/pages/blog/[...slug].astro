@@ -1,0 +1,416 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import { getCollection, getEntry, render } from 'astro:content';
+
+export async function getStaticPaths() {
+	const posts = await getCollection('blog');
+	const visiblePosts = posts.filter((post) => !post.data.draft);
+
+	if (visiblePosts.length === 0) {
+		return [];
+	}
+
+	return visiblePosts.map((post) => ({
+		params: { slug: post.id.replace(/\.(md|mdx)$/, '') },
+	}));
+}
+
+const { slug } = Astro.params;
+const post = await getEntry('blog', slug);
+if (!post) return Astro.redirect('/404');
+const { Content } = await render(post);
+---
+
+<Layout
+	title={`${post.data.title} | Leaftix Blog`}
+	description={post.data.description}
+	ogType="article"
+	ogImageAlt={post.data.image?.alt ?? post.data.title}
+>
+	<a class="skip-link" href="#main-content">Skip to content</a>
+
+	<div class="post-page">
+		<SiteHeader />
+
+		<main id="main-content">
+			<article>
+				<header class="post-header">
+					<p class="eyebreadcrumb">
+						<a class="breadcrumb-link" href="/blog">Blog</a>
+						<span class="breadcrumb-separator" aria-hidden="true">/</span>
+						<span>{post.data.title}</span>
+					</p>
+					<h1 class="post-title-display">{post.data.title}</h1>
+
+					<div class="post-meta-bar">
+						<div class="post-meta-left">
+							<span class="post-author-label">{post.data.author}</span>
+							<time datetime={post.data.pubDate.toISOString()}>
+								{post.data.pubDate.toLocaleDateString('en-US', {
+									year: 'numeric',
+									month: 'long',
+									day: 'numeric',
+								})}
+							</time>
+							{post.data.updatedDate && (
+								<span class="post-updated">
+									(Updated {post.data.updatedDate.toLocaleDateString('en-US', {
+										year: 'numeric',
+										month: 'long',
+										day: 'numeric',
+									})})
+								</span>
+							)}
+						</div>
+						<div class="post-tags">
+							{post.data.tags.map((tag) => (
+								<span class="post-tag">{tag}</span>
+							))}
+						</div>
+					</div>
+
+					{post.data.description && (
+						<p class="post-description-lead">{post.data.description}</p>
+					)}
+				</header>
+
+				<div class="post-content">
+					<Content />
+				</div>
+			</article>
+
+			<nav class="post-footer-nav">
+				<a class="post-back-link" href="/blog">
+					<span aria-hidden="true">&larr;</span>
+					<span>Back to Blog</span>
+				</a>
+			</nav>
+		</main>
+	</div>
+</Layout>
+
+<style>
+	.post-page {
+		position: relative;
+		width: min(calc(100% - 3rem), 78rem);
+		margin: 0 auto;
+		padding: 1.25rem 0 5rem;
+	}
+
+	.post-header {
+		padding: 4.5rem 0 3rem;
+		max-width: 52rem;
+	}
+
+	.eyebreadcrumb {
+		font-family: var(--font-mono);
+		font-size: 0.82rem;
+		font-weight: 600;
+		letter-spacing: 0.08em;
+		line-height: 1.4;
+		text-transform: uppercase;
+		margin: 0;
+		display: flex;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 0.55rem;
+		color: var(--muted-foreground);
+		font-style: normal;
+	}
+
+	.breadcrumb-link {
+		color: var(--foreground);
+		text-decoration: none;
+		font-weight: 600;
+		transition: opacity 120ms ease;
+	}
+
+	.breadcrumb-link:hover,
+	.breadcrumb-link:focus-visible {
+		opacity: 0.68;
+	}
+
+	.breadcrumb-separator {
+		color: var(--muted-foreground);
+	}
+
+	.post-title-display {
+		margin: 0.85rem 0 0;
+		font-size: clamp(2.4rem, 4vw, 3.6rem);
+		font-weight: 800;
+		letter-spacing: -0.05em;
+		line-height: 1.04;
+		color: var(--foreground);
+	}
+
+	.post-meta-bar {
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-between;
+		gap: 1rem;
+		margin-top: 1.5rem;
+		padding-bottom: 1.5rem;
+		border-bottom: 1px solid var(--border);
+		flex-wrap: wrap;
+	}
+
+	.post-meta-left {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+		font-size: 0.92rem;
+		color: var(--muted-foreground);
+	}
+
+	.post-author-label {
+		font-weight: 700;
+		color: var(--foreground);
+	}
+
+	.post-updated {
+		font-style: italic;
+	}
+
+	.post-tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4rem;
+	}
+
+	.post-tag {
+		padding: 0.2rem 0.55rem;
+		border-radius: 999px;
+		background: var(--muted);
+		font-size: 0.78rem;
+		font-weight: 600;
+		color: var(--muted-foreground);
+		font-family: var(--font-mono);
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+	}
+
+	.post-description-lead {
+		margin: 1.5rem 0 0;
+		font-size: 1.15rem;
+		line-height: 1.7;
+		color: var(--muted-foreground);
+		max-width: 44rem;
+	}
+
+	.post-content {
+		max-width: 52rem;
+		padding-bottom: 3rem;
+	}
+
+	.post-content :global(h2) {
+		margin: 2.5rem 0 0.85rem;
+		font-size: clamp(1.6rem, 2.4vw, 2rem);
+		font-weight: 800;
+		letter-spacing: -0.04em;
+		line-height: 1.08;
+		color: var(--foreground);
+	}
+
+	.post-content :global(h3) {
+		margin: 2rem 0 0.65rem;
+		font-size: 1.25rem;
+		font-weight: 700;
+		letter-spacing: -0.03em;
+		line-height: 1.2;
+		color: var(--foreground);
+	}
+
+	.post-content :global(h4) {
+		margin: 1.5rem 0 0.5rem;
+		font-size: 1.1rem;
+		font-weight: 700;
+		letter-spacing: -0.02em;
+		line-height: 1.3;
+		color: var(--foreground);
+	}
+
+	.post-content :global(p) {
+		margin: 0 0 1.15rem;
+		font-size: 1.05rem;
+		line-height: 1.75;
+		color: var(--foreground);
+	}
+
+	.post-content :global(strong) {
+		font-weight: 700;
+	}
+
+	.post-content :global(em) {
+		font-style: italic;
+	}
+
+	.post-content :global(code) {
+		font-size: 0.92em;
+		padding: 0.2rem 0.45rem;
+		border-radius: 0.45rem;
+		background: color-mix(in srgb, var(--muted) 80%, var(--foreground) 20%);
+		color: var(--foreground);
+		font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+		font-weight: 600;
+	}
+
+	.post-content :global(pre) {
+		margin: 1.25rem 0;
+		padding: 1.25rem;
+		border-radius: 0.95rem;
+		background: var(--muted);
+		border: 1px solid var(--border);
+		overflow-x: auto;
+		font-size: 0.92rem;
+		line-height: 1.6;
+	}
+
+	.post-content :global(pre code) {
+		padding: 0;
+		background: transparent;
+		border-radius: 0;
+		font-weight: 400;
+		color: var(--foreground);
+	}
+
+	.post-content :global(blockquote) {
+		margin: 1.5rem 0;
+		padding: 0.75rem 1.25rem;
+		border-left: 3px solid var(--foreground);
+		color: var(--muted-foreground);
+		font-style: italic;
+		font-size: 1.05rem;
+		line-height: 1.7;
+	}
+
+	.post-content :global(blockquote p) {
+		margin: 0;
+		color: inherit;
+		font-style: inherit;
+	}
+
+	.post-content :global(blockquote p + p) {
+		margin-top: 0.85rem;
+	}
+
+	.post-content :global(blockquote strong) {
+		color: var(--foreground);
+	}
+
+	.post-content :global(ul),
+	.post-content :global(ol) {
+		margin: 0 0 1.15rem;
+		padding-left: 1.5rem;
+		font-size: 1.05rem;
+		line-height: 1.75;
+		color: var(--foreground);
+	}
+
+	.post-content :global(li) {
+		margin-bottom: 0.35rem;
+	}
+
+	.post-content :global(li > ul),
+	.post-content :global(li > ol) {
+		margin: 0.35rem 0 0.5rem;
+	}
+
+	.post-content :global(li::marker) {
+		color: var(--muted-foreground);
+	}
+
+	.post-content :global(a) {
+		font-weight: 600;
+		color: var(--accent-link);
+		text-decoration: none;
+		transition: opacity 120ms ease;
+	}
+
+	.post-content :global(a:hover),
+	.post-content :global(a:focus-visible) {
+		opacity: 0.72;
+	}
+
+	.post-content :global(img) {
+		margin: 1.5rem 0;
+		border-radius: 0.95rem;
+		border: 1px solid var(--border);
+		width: 100%;
+		height: auto;
+	}
+
+	.post-content :global(hr) {
+		margin: 2.5rem 0;
+		border: none;
+		height: 1px;
+		background: var(--border);
+	}
+
+	.post-content :global(table) {
+		width: 100%;
+		margin: 1.5rem 0;
+		border-collapse: collapse;
+		font-size: 0.98rem;
+		line-height: 1.6;
+	}
+
+	.post-content :global(th),
+	.post-content :global(td) {
+		padding: 0.65rem 0.85rem;
+		border: 1px solid var(--border);
+		text-align: left;
+	}
+
+	.post-content :global(th) {
+		background: var(--muted);
+		font-weight: 700;
+		color: var(--foreground);
+	}
+
+	.post-content :global(td) {
+		color: var(--foreground);
+	}
+
+	.post-footer-nav {
+		padding: 2rem 0;
+		border-top: 1px solid var(--border);
+	}
+
+	.post-back-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		font-size: 1rem;
+		font-weight: 700;
+		color: var(--foreground);
+		text-decoration: none;
+		transition: opacity 120ms ease;
+	}
+
+	.post-back-link:hover,
+	.post-back-link:focus-visible {
+		opacity: 0.68;
+	}
+
+	@media (max-width: 720px) {
+		.post-page {
+			width: min(calc(100% - 1.5rem), 78rem);
+			padding-top: 1rem;
+		}
+
+		.post-header {
+			padding: 3rem 0 2rem;
+		}
+
+		.post-meta-bar {
+			flex-direction: column;
+			align-items: flex-start;
+		}
+
+		.post-content :global(pre) {
+			padding: 1rem;
+			font-size: 0.85rem;
+		}
+	}
+</style>

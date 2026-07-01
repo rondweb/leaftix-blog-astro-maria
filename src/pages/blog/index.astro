@@ -1,0 +1,258 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+const sortedPosts = allPosts.sort(
+	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+
+<Layout
+	title="Blog | Leaftix Blog — AI, Autonomous Governance & Sustainable Food Production"
+	description="Explore articles about AI-driven autonomous governance, Digital Twin technology, edge-native architecture, and sustainable food production."
+>
+	<a class="skip-link" href="#main-content">Skip to content</a>
+
+	<div class="blog-page">
+		<SiteHeader />
+
+		<main id="main-content">
+			<header class="blog-hero">
+				<p class="eyebrow">Blog</p>
+				<h1>Insights on AI, autonomous governance, and the future of food production.</h1>
+				<p class="blog-intro">
+					Articles, research insights, product updates, and technical deep dives from the
+					Leaftix team.
+				</p>
+			</header>
+
+			<section class="posts-list" aria-label="Blog posts">
+				{sortedPosts.length === 0 && (
+					<p class="empty-state">No posts yet. Check back soon!</p>
+				)}
+
+				{
+					sortedPosts.map((post) => (
+						<article class="post-card">
+							<div class="post-card-content">
+								<div class="post-meta">
+									<time datetime={post.data.pubDate.toISOString()}>
+										{post.data.pubDate.toLocaleDateString('en-US', {
+											year: 'numeric',
+											month: 'long',
+											day: 'numeric',
+										})}
+									</time>
+									{post.data.tags.length > 0 && (
+										<div class="post-tags">
+											{post.data.tags.slice(0, 3).map((tag) => (
+												<span class="post-tag">{tag}</span>
+											))}
+										</div>
+									)}
+								</div>
+								<h2 class="post-title">
+									<a href={`/blog/${post.id.replace(/\.(md|mdx)$/, '')}`}>{post.data.title}</a>
+								</h2>
+								<p class="post-description">{post.data.description}</p>
+								<div class="post-footer-meta">
+									<span class="post-author">{post.data.author}</span>
+									<a class="post-read-link" href={`/blog/${post.id.replace(/\.(md|mdx)$/, '')}`}>
+										<span>Read article</span>
+										<span aria-hidden="true">-></span>
+									</a>
+								</div>
+							</div>
+						</article>
+					))
+				}
+			</section>
+		</main>
+	</div>
+</Layout>
+
+<style>
+	.blog-page {
+		width: min(calc(100% - 3rem), 78rem);
+		margin: 0 auto;
+		padding: 1.25rem 0 5rem;
+	}
+
+	.eyebrow {
+		font-family: var(--font-mono);
+		font-size: 0.82rem;
+		font-weight: 600;
+		letter-spacing: 0.08em;
+		line-height: 1.4;
+		text-transform: uppercase;
+		margin: 0;
+		color: var(--muted-foreground);
+		font-style: normal;
+	}
+
+	.blog-hero {
+		padding: 4.5rem 0 3rem;
+		max-width: 52rem;
+	}
+
+	h1 {
+		margin: 0.85rem 0 0;
+		font-size: clamp(2.4rem, 4vw, 3.8rem);
+		font-weight: 800;
+		letter-spacing: -0.05em;
+		line-height: 1.03;
+		color: var(--foreground);
+	}
+
+	.blog-intro {
+		margin: 1.25rem 0 0;
+		font-size: 1.1rem;
+		line-height: 1.7;
+		color: var(--muted-foreground);
+		max-width: 38rem;
+	}
+
+	.empty-state {
+		padding: 3rem 0;
+		text-align: center;
+		color: var(--muted-foreground);
+		font-size: 1.1rem;
+	}
+
+	.posts-list {
+		display: grid;
+		gap: 1.5rem;
+		border-top: 1px solid var(--border);
+		padding-top: 2rem;
+	}
+
+	.post-card {
+		padding: 1.5rem;
+		border: 1px solid var(--border);
+		border-radius: 1.15rem;
+		background: var(--card);
+		transition:
+			transform 140ms ease,
+			box-shadow 140ms ease;
+	}
+
+	.post-card:hover {
+		transform: translateY(-3px);
+		box-shadow: var(--shadow-soft);
+	}
+
+	.post-card-content {
+		display: grid;
+		gap: 0.75rem;
+	}
+
+	.post-meta {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		flex-wrap: wrap;
+	}
+
+	.post-meta time {
+		font-size: 0.88rem;
+		color: var(--muted-foreground);
+		font-weight: 500;
+	}
+
+	.post-tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.4rem;
+	}
+
+	.post-tag {
+		padding: 0.2rem 0.55rem;
+		border-radius: 999px;
+		background: var(--muted);
+		font-size: 0.78rem;
+		font-weight: 600;
+		color: var(--muted-foreground);
+		font-family: var(--font-mono);
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+	}
+
+	.post-title {
+		margin: 0;
+	}
+
+	.post-title a {
+		font-size: clamp(1.35rem, 1.8vw, 1.7rem);
+		font-weight: 800;
+		letter-spacing: -0.03em;
+		line-height: 1.12;
+		color: var(--foreground);
+		text-decoration: none;
+		transition: opacity 120ms ease;
+	}
+
+	.post-title a:hover,
+	.post-title a:focus-visible {
+		opacity: 0.72;
+	}
+
+	.post-description {
+		margin: 0;
+		font-size: 0.98rem;
+		line-height: 1.65;
+		color: var(--muted-foreground);
+		max-width: 42rem;
+	}
+
+	.post-footer-meta {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 1rem;
+		padding-top: 0.5rem;
+	}
+
+	.post-author {
+		font-size: 0.88rem;
+		color: var(--muted-foreground);
+		font-weight: 600;
+	}
+
+	.post-read-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.4rem;
+		font-size: 0.92rem;
+		font-weight: 700;
+		color: var(--foreground);
+		text-decoration: none;
+		transition: opacity 120ms ease;
+	}
+
+	.post-read-link:hover,
+	.post-read-link:focus-visible {
+		opacity: 0.68;
+	}
+
+	@media (max-width: 720px) {
+		.blog-page {
+			width: min(calc(100% - 1.5rem), 78rem);
+			padding-top: 1rem;
+		}
+
+		.blog-hero {
+			padding: 3rem 0 2rem;
+		}
+
+		.post-card {
+			padding: 1.25rem;
+		}
+
+		.post-footer-meta {
+			flex-direction: column;
+			align-items: flex-start;
+		}
+	}
+</style>
