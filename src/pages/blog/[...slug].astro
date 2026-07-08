@@ -26,6 +26,7 @@ const { Content } = await render(post);
 	title={`${post.data.title} | Leaftix Blog`}
 	description={post.data.description}
 	ogType="article"
+	ogImage={post.data.image?.url}
 	ogImageAlt={post.data.image?.alt ?? post.data.title}
 >
 	<a class="skip-link" href="#main-content">Skip to content</a>

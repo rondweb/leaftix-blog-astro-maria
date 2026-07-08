@@ -9,12 +9,13 @@ const {
 	showFooterCta = true,
 	noindex = false,
 	ogType = 'website',
+	ogImage = siteConfig.ogImage,
 	ogImageAlt = siteConfig.title,
 	schema,
 } = Astro.props;
 
 const canonicalUrl = new URL(Astro.url.pathname, siteConfig.siteUrl).toString();
-const ogImageUrl = new URL(siteConfig.ogImage, siteConfig.siteUrl).toString();
+const ogImageUrl = new URL(ogImage, siteConfig.siteUrl).toString();
 const schemaData =
 	schema ??
 	[
