@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import SiteFooter from '../components/SiteFooter.astro';
+import { SEO } from 'astro-seo';
 import { siteConfig } from '../config/site';
 
 const {
@@ -60,23 +61,12 @@ const schemaData =
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
 		<meta name="generator" content={Astro.generator} />
-		<meta name="description" content={description} />
-		<meta name="keywords" content={siteConfig.keywords.join(', ')} />
-		<meta name="author" content={siteConfig.authorName} />
-		<meta name="robots" content={noindex ? 'noindex, nofollow' : 'index, follow'} />
-		<link rel="canonical" href={canonicalUrl} />
-		<meta property="og:title" content={title} />
-		<meta property="og:description" content={description} />
-		<meta property="og:type" content={ogType} />
-		<meta property="og:url" content={canonicalUrl} />
-		<meta property="og:site_name" content={siteConfig.name} />
-		<meta property="og:locale" content={siteConfig.locale.replace('-', '_')} />
-		<meta property="og:image" content={ogImageUrl} />
-		<meta property="og:image:alt" content={ogImageAlt} />
-		<meta name="twitter:card" content="summary_large_image" />
-		<meta name="twitter:title" content={title} />
-		<meta name="twitter:description" content={description} />
-		<meta name="twitter:image" content={ogImageUrl} />
+		<link
+			rel="alternate"
+			type="application/rss+xml"
+			title={title + ' — RSS Feed'}
+			href={new URL('/rss.xml', siteConfig.siteUrl).toString()}
+		/>
 		<link
 			rel="preload"
 			href="/fonts/manrope-latin-wght-normal.woff2"
@@ -84,7 +74,42 @@ const schemaData =
 			type="font/woff2"
 			crossorigin
 		/>
-		<title>{title}</title>
+		<SEO
+			title={title}
+			titleDefault={siteConfig.title}
+			description={description}
+			canonical={canonicalUrl}
+			noindex={noindex}
+			openGraph={{
+				basic: {
+					title,
+					type: ogType,
+					image: ogImageUrl,
+					url: canonicalUrl,
+				},
+				optional: {
+					description,
+					locale: siteConfig.locale.replace('-', '_'),
+					siteName: siteConfig.name,
+				},
+				image: {
+					alt: ogImageAlt,
+				},
+			}}
+			twitter={{
+				card: 'summary_large_image',
+				title,
+				description,
+				image: ogImageUrl,
+				imageAlt: ogImageAlt,
+			}}
+			extend={{
+				meta: [
+					{ name: 'keywords', content: siteConfig.keywords.join(', ') },
+					{ name: 'author', content: siteConfig.authorName },
+				],
+			}}
+		/>
 		<link rel="stylesheet" href="/cookie-consent.css" />
 		<script type="application/ld+json" set:html={JSON.stringify(schemaData)}></script>
 		<script is:inline>
