@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
+import robotsTxt from 'astro-robots-txt';
 import tailwindcss from '@tailwindcss/vite';
 import { siteConfig } from './src/config/site.ts';
 
@@ -26,6 +27,9 @@ export default defineConfig({
 				const pathname = new URL(page).pathname;
 				return !['/cookies/', '/privacy/', '/terms/'].includes(pathname);
 			},
+		}),
+		robotsTxt({
+			host: true,
 		}),
 	],
 	vite: {
