@@ -20,12 +20,31 @@ if (usingFallbackSiteUrl) {
 // https://astro.build/config
 export default defineConfig({
 	site: siteConfig.siteUrl,
+	i18n: {
+		defaultLocale: 'en',
+		locales: ['en', 'pt-BR', 'es', 'fr'],
+		routing: {
+			// English (the official/default locale) lives at the root (/).
+			// The other locales are served under a URL prefix (/pt-BR/, /es/, /fr/).
+			prefixDefaultLocale: false,
+		},
+	},
 	integrations: [
 		mdx(),
 		sitemap({
+			i18n: {
+				defaultLocale: 'en',
+				locales: {
+					en: 'en',
+					'pt-BR': 'pt-BR',
+					es: 'es',
+					fr: 'fr',
+				},
+			},
 			filter(page) {
-				const pathname = new URL(page).pathname;
-				return !['/cookies/', '/privacy/', '/terms/'].includes(pathname);
+				// Legal pages are excluded in every locale (e.g. /es/cookies/).
+				const segments = new URL(page).pathname.split('/').filter(Boolean);
+				return !['cookies', 'privacy', 'terms'].includes(segments.at(-1) ?? '');
 			},
 		}),
 		robotsTxt({

@@ -1,0 +1,11 @@
+---
+// Localized route: /pt-BR/resume, /es/resume, /fr/resume.
+import ResumePage from '../resume.astro';
+import { localeParams } from '../../config/i18n';
+
+export function getStaticPaths() {
+	return localeParams();
+}
+---
+
+<ResumePage />

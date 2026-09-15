@@ -1,11 +1,18 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import SiteHeader from '../components/SiteHeader.astro';
+import { getUi, getLocalePath } from '../config/i18n';
+import type { LocaleCode } from '../config/i18n';
+
+// Astro resolves currentLocale from the requested URL, so an unknown /es/... path
+// gets the Spanish 404 copy from the shared dictionary.
+const currentLocale: LocaleCode = (Astro.currentLocale as LocaleCode) ?? 'en';
+const t = getUi(currentLocale);
 ---
 
 <Layout
-	title="Page Not Found | Leaftix Blog"
-	description="404 page for the Leaftix Blog."
+	title={t.notFound.title}
+	description={t.notFound.description}
 	showFooterCta={false}
 	noindex={true}
 >
@@ -16,16 +23,15 @@ import SiteHeader from '../components/SiteHeader.astro';
 
 		<main id="main-content" class="not-found-main">
 			<header class="not-found-header">
-				<h1>Page not found.</h1>
+				<h1>{t.notFound.heading}</h1>
 			</header>
 			<p class="intro">
-				The link may be outdated, the page may have moved, or the URL may have been typed
-				incorrectly.
+				{t.notFound.intro}
 			</p>
 
 			<div class="actions">
-				<a href="/">
-					<span>Go to homepage</span>
+				<a href={getLocalePath('/', currentLocale)}>
+					<span>{t.common.goToHomepage}</span>
 					<span aria-hidden="true">-></span>
 				</a>
 			</div>

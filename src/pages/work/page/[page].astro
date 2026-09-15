@@ -3,6 +3,11 @@ import { Image } from 'astro:assets';
 import Layout from '../../../layouts/Layout.astro';
 import SiteHeader from '../../../components/SiteHeader.astro';
 import { projects, workPageSize } from '../../../data/projects';
+import { getLocalePath } from '../../../config/i18n';
+import type { LocaleCode } from '../../../config/i18n';
+
+// Keeps every link inside the locale being rendered (e.g. /es/work/page/2).
+const currentLocale: LocaleCode = (Astro.currentLocale as LocaleCode) ?? 'en';
 
 export function getStaticPaths() {
 	const totalPages = Math.ceil(projects.length / workPageSize);
@@ -55,14 +60,14 @@ const { page, totalPages, visibleProjects } = Astro.props;
 								<p class="work-description">{project.description}</p>
 
 								<div class="actions">
-									<a href={project.href}>
+									<a href={getLocalePath(project.href, currentLocale)}>
 										<span>View case study</span>
 										<span aria-hidden="true">-&gt;</span>
 									</a>
 								</div>
 							</div>
 
-							<a class="work-visual" href={project.href}>
+							<a class="work-visual" href={getLocalePath(project.href, currentLocale)}>
 								<Image
 									class={project.imageClass}
 									src={project.image}
@@ -82,7 +87,7 @@ const { page, totalPages, visibleProjects } = Astro.props;
 				{
 					Array.from({ length: totalPages }, (_, index) => {
 						const pageNumber = index + 1;
-						const href = pageNumber === 1 ? '/work' : `/work/page/${pageNumber}`;
+						const href = getLocalePath(pageNumber === 1 ? '/work' : `/work/page/${pageNumber}`, currentLocale);
 
 						return (
 							<a

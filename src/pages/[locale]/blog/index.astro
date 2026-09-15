@@ -1,0 +1,13 @@
+---
+// Localized route: /pt-BR/blog, /es/blog, /fr/blog.
+// The page filters posts by Astro.currentLocale, so it renders each locale's own
+// posts without any extra work here.
+import BlogIndexPage from '../../blog/index.astro';
+import { localeParams } from '../../../config/i18n';
+
+export function getStaticPaths() {
+	return localeParams();
+}
+---
+
+<BlogIndexPage />

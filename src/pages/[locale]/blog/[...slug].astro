@@ -1,0 +1,21 @@
+---
+// Localized route: /pt-BR/blog/<slug>, /es/blog/<slug>, /fr/blog/<slug>.
+// Every locale ships the same slugs (canonicalSlug) as the English posts, so the
+// reused page resolves the translated entry via getEntry('blog', '<locale>/<slug>').
+import PostPage from '../../blog/[...slug].astro';
+import { getCollection } from 'astro:content';
+import { defaultLocale } from '../../../config/i18n';
+
+export async function getStaticPaths() {
+	const translated = await getCollection(
+		'blog',
+		({ data }) => !data.draft && data.locale !== defaultLocale
+	);
+
+	return translated.map((post) => ({
+		params: { locale: post.data.locale, slug: post.data.canonicalSlug },
+	}));
+}
+---
+
+<PostPage />

@@ -1,0 +1,11 @@
+---
+// Localized route: /pt-BR/privacy, /es/privacy, /fr/privacy.
+import PrivacyPage from '../privacy.astro';
+import { localeParams } from '../../config/i18n';
+
+export function getStaticPaths() {
+	return localeParams();
+}
+---
+
+<PrivacyPage />

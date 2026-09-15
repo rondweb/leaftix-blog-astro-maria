@@ -1,0 +1,11 @@
+---
+// Localized route: /pt-BR/terms, /es/terms, /fr/terms.
+import TermsPage from '../terms.astro';
+import { localeParams } from '../../config/i18n';
+
+export function getStaticPaths() {
+	return localeParams();
+}
+---
+
+<TermsPage />

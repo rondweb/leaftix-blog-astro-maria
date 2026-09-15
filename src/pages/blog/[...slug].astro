@@ -2,6 +2,8 @@
 import Layout from '../../layouts/Layout.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
 import { getCollection, getEntry, render } from 'astro:content';
+import { getUi, getLocalePath, localeMeta } from '../../config/i18n';
+import type { LocaleCode } from '../../config/i18n';
 
 export async function getStaticPaths() {
 	const posts = await getCollection('blog');
@@ -11,23 +13,57 @@ export async function getStaticPaths() {
 		return [];
 	}
 
-	return visiblePosts.map((post) => ({
-		params: { slug: post.id.replace(/\.(md|mdx)$/, '') },
-	}));
+	// Get unique canonical slugs (strip locale prefix to get the canonical slug)
+	const seen = new Set<string>();
+	return visiblePosts
+		.map((post) => {
+			// The collection id is "locale/post-slug", strip the locale to get just "post-slug"
+			const slugPart = post.id.split('/').slice(1).join('/');
+			const cleanSlug = slugPart.replace(/\.(md|mdx)$/, '');
+			return { slug: cleanSlug, post };
+		})
+		.filter(({ slug }) => {
+			if (seen.has(slug)) return false;
+			seen.add(slug);
+			return true;
+		})
+		.map(({ slug }) => ({
+			params: { slug },
+		}));
 }
 
+const currentLocale: LocaleCode = (Astro.currentLocale as LocaleCode) ?? 'en';
 const { slug } = Astro.params;
-const post = await getEntry('blog', slug);
-if (!post) return Astro.redirect('/404');
-const { Content } = await render(post);
+const t = getUi(currentLocale);
+
+// Construct the full entry ID using locale + slug (e.g., "pt-BR/hello-world")
+const entryId = `${currentLocale}/${slug}`;
+const post = await getEntry('blog', entryId);
+
+// If translation doesn't exist for current locale, fall back to English
+const fallbackPost = !post ? await getEntry('blog', `en/${slug}`) : null;
+
+if (!post && !fallbackPost) {
+	return Astro.redirect('/404');
+}
+
+const activePost = post ?? fallbackPost!;
+const { Content } = await render(activePost);
+
+// Find all translations for hreflang links
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+const translations = allPosts.filter((p) => {
+	const postSlug = p.id.split('/').slice(1).join('/').replace(/\.(md|mdx)$/, '');
+	return postSlug === slug;
+});
 ---
 
 <Layout
-	title={`${post.data.title} | Leaftix Blog`}
-	description={post.data.description}
+	title={`${activePost.data.title} | Leaftix Blog`}
+	description={activePost.data.description}
 	ogType="article"
-	ogImage={post.data.image?.url}
-	ogImageAlt={post.data.image?.alt ?? post.data.title}
+	ogImage={activePost.data.image?.url}
+	ogImageAlt={activePost.data.image?.alt ?? activePost.data.title}
 >
 	<a class="skip-link" href="#main-content">Skip to content</a>
 
@@ -38,25 +74,25 @@ const { Content } = await render(post);
 			<article>
 				<header class="post-header">
 					<p class="eyebreadcrumb">
-						<a class="breadcrumb-link" href="/blog">Blog</a>
+						<a class="breadcrumb-link" href={getLocalePath('/blog', currentLocale)}>Blog</a>
 						<span class="breadcrumb-separator" aria-hidden="true">/</span>
-						<span>{post.data.title}</span>
+						<span>{activePost.data.title}</span>
 					</p>
-					<h1 class="post-title-display">{post.data.title}</h1>
+					<h1 class="post-title-display">{activePost.data.title}</h1>
 
 					<div class="post-meta-bar">
 						<div class="post-meta-left">
-							<span class="post-author-label">{post.data.author}</span>
-							<time datetime={post.data.pubDate.toISOString()}>
-								{post.data.pubDate.toLocaleDateString('en-US', {
+							<span class="post-author-label">{activePost.data.author}</span>
+							<time datetime={activePost.data.pubDate.toISOString()}>
+								{activePost.data.pubDate.toLocaleDateString(t.dateLocale, {
 									year: 'numeric',
 									month: 'long',
 									day: 'numeric',
 								})}
 							</time>
-							{post.data.updatedDate && (
+							{activePost.data.updatedDate && (
 								<span class="post-updated">
-									(Updated {post.data.updatedDate.toLocaleDateString('en-US', {
+									({t.common.updated} {activePost.data.updatedDate.toLocaleDateString(t.dateLocale, {
 										year: 'numeric',
 										month: 'long',
 										day: 'numeric',
@@ -65,26 +101,47 @@ const { Content } = await render(post);
 							)}
 						</div>
 						<div class="post-tags">
-							{post.data.tags.map((tag) => (
+							{activePost.data.tags.map((tag) => (
 								<span class="post-tag">{tag}</span>
 							))}
 						</div>
 					</div>
 
-					{post.data.description && (
-						<p class="post-description-lead">{post.data.description}</p>
+					{activePost.data.description && (
+						<p class="post-description-lead">{activePost.data.description}</p>
 					)}
 				</header>
 
 				<div class="post-content">
 					<Content />
 				</div>
+
+				{/* Language switcher for translations */}
+				{translations.length > 1 && (
+					<nav class="post-translations" aria-label="Available translations">
+						<span class="translations-label">Idiomas:</span>
+						{translations.map((translation) => {
+							const transLocale = translation.data.locale as LocaleCode;
+							const transSlug = translation.id.split('/').slice(1).join('/').replace(/\.(md|mdx)$/, '');
+							return (
+								<a
+									href={getLocalePath(`/blog/${transSlug}`, transLocale)}
+									hrefLang={transLocale}
+									lang={transLocale}
+									className={transLocale === currentLocale ? 'is-current' : ''}
+								>
+									{localeMeta[transLocale].shortName}
+								</a>
+							);
+						})}
+					</nav>
+				)}
 			</article>
 
 			<nav class="post-footer-nav">
-				<a class="post-back-link" href="/blog">
+				<a class="post-back-link" href={getLocalePath('/blog', currentLocale)}>
 					<span aria-hidden="true">&larr;</span>
-					<span>Back to Blog</span>
+					<span>{t.common.backToBlog}</span>
 				</a>
 			</nav>
 		</main>
@@ -394,7 +451,7 @@ const { Content } = await render(post);
 		opacity: 0.68;
 	}
 
-	@media (max-width: 720px) {
+		@media (max-width: 720px) {
 		.post-page {
 			width: min(calc(100% - 1.5rem), 78rem);
 			padding-top: 1rem;
@@ -413,5 +470,52 @@ const { Content } = await render(post);
 			padding: 1rem;
 			font-size: 0.85rem;
 		}
+	}
+
+	/* Post translations navigation */
+	.post-translations {
+		display: flex;
+		align-items: center;
+		gap: 0.75rem;
+		margin: 1.5rem 0;
+		padding: 0.75rem 1rem;
+		border-radius: 999px;
+		background: var(--muted);
+		font-size: 0.85rem;
+		font-weight: 600;
+		flex-wrap: wrap;
+	}
+
+	.translations-label {
+		font-family: var(--font-mono);
+		letter-spacing: 0.05em;
+		text-transform: uppercase;
+		color: var(--muted-foreground);
+		margin: 0;
+	}
+
+	.post-translations a {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 40px;
+		height: 28px;
+		padding: 0 0.5rem;
+		border-radius: 0.5rem;
+		text-decoration: none;
+		color: var(--muted-foreground);
+		transition: all 120ms ease;
+	}
+
+	.post-translations a:hover,
+	.post-translations a:focus-visible {
+		background: var(--background);
+		color: var(--foreground);
+	}
+
+	.post-translations a.is-current {
+		background: var(--accent-bg, var(--foreground));
+		color: var(--accent-text, var(--background));
+		font-weight: 700;
 	}
 </style>

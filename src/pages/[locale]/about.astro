@@ -1,0 +1,11 @@
+---
+// Localized route: /pt-BR/about, /es/about, /fr/about.
+import AboutPage from '../about.astro';
+import { localeParams } from '../../config/i18n';
+
+export function getStaticPaths() {
+	return localeParams();
+}
+---
+
+<AboutPage />

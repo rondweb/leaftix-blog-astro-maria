@@ -3,8 +3,13 @@ import { Image } from 'astro:assets';
 import Layout from '../../layouts/Layout.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
 import { siteConfig } from '../../config/site';
+import { getLocalePath } from '../../config/i18n';
+import type { LocaleCode } from '../../config/i18n';
 import nextpointImage from '../../assets/images/nextpoint.webp';
 import nextpointTranscriptsImage from '../../assets/images/nextpoint-transcripts.webp';
+
+// Keeps the breadcrumb inside the locale being rendered (e.g. /es/work).
+const currentLocale: LocaleCode = (Astro.currentLocale as LocaleCode) ?? 'en';
 
 const highlights = [
 	{ label: 'Client', value: 'Nextpoint' },
@@ -81,7 +86,7 @@ const caseStudySchema = [
 		<main id="main-content">
 			<section class="case-hero">
 				<p class="eyebrow">
-					<a class="breadcrumb-link" href="/work">Case Study</a>
+					<a class="breadcrumb-link" href={getLocalePath('/work', currentLocale)}>Case Study</a>
 					<span class="breadcrumb-separator" aria-hidden="true">/</span>
 					<span>Nextpoint</span>
 				</p>

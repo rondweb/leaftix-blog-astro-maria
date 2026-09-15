@@ -1,0 +1,11 @@
+---
+// Localized route: /pt-BR/work/nextpoint, /es/work/nextpoint, /fr/work/nextpoint.
+import NextpointPage from '../../work/nextpoint.astro';
+import { localeParams } from '../../../config/i18n';
+
+export function getStaticPaths() {
+	return localeParams();
+}
+---
+
+<NextpointPage />

@@ -2,16 +2,30 @@
 import Layout from '../../layouts/Layout.astro';
 import SiteHeader from '../../components/SiteHeader.astro';
 import { getCollection } from 'astro:content';
+import { getUi, getLocalePath } from '../../config/i18n';
+import type { LocaleCode } from '../../config/i18n';
 
-const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+const currentLocale: LocaleCode = (Astro.currentLocale as LocaleCode) ?? 'en';
+const t = getUi(currentLocale);
+
+// Fetch only posts for the current locale that are not drafts
+const allPosts = await getCollection('blog', ({ data }) => 
+	!data.draft && data.locale === currentLocale
+);
 const sortedPosts = allPosts.sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 );
+
+// Helper: build locale-aware URL for a post.
+// post.id is "<locale>/<slug>", so the URL has to come from canonicalSlug.
+function getPostUrl(post: typeof sortedPosts[0]): string {
+	return getLocalePath(`/blog/${post.data.canonicalSlug}`, post.data.locale);
+}
 ---
 
 <Layout
-	title="Blog | Leaftix Blog — AI, Autonomous Governance & Sustainable Food Production"
-	description="Explore articles about AI-driven autonomous governance, Digital Twin technology, edge-native architecture, and sustainable food production."
+	title={t.blog.title}
+	description={t.blog.description}
 >
 	<a class="skip-link" href="#main-content">Skip to content</a>
 
@@ -20,17 +34,16 @@ const sortedPosts = allPosts.sort(
 
 		<main id="main-content">
 			<header class="blog-hero">
-				<p class="eyebrow">Blog</p>
-				<h1>Insights on AI, autonomous governance, and the future of food production.</h1>
+				<p class="eyebrow">{t.blog.eyebrow}</p>
+				<h1>{t.blog.heading}</h1>
 				<p class="blog-intro">
-					Articles, research insights, product updates, and technical deep dives from the
-					Leaftix team.
+					{t.blog.intro}
 				</p>
 			</header>
 
 			<section class="posts-list" aria-label="Blog posts">
 				{sortedPosts.length === 0 && (
-					<p class="empty-state">No posts yet. Check back soon!</p>
+					<p class="empty-state">{t.common.noPosts}</p>
 				)}
 
 				{
@@ -39,7 +52,7 @@ const sortedPosts = allPosts.sort(
 							<div class="post-card-content">
 								<div class="post-meta">
 									<time datetime={post.data.pubDate.toISOString()}>
-										{post.data.pubDate.toLocaleDateString('en-US', {
+										{post.data.pubDate.toLocaleDateString(t.dateLocale, {
 											year: 'numeric',
 											month: 'long',
 											day: 'numeric',
@@ -54,13 +67,13 @@ const sortedPosts = allPosts.sort(
 									)}
 								</div>
 								<h2 class="post-title">
-									<a href={`/blog/${post.id.replace(/\.(md|mdx)$/, '')}`}>{post.data.title}</a>
+									<a href={getPostUrl(post)}>{post.data.title}</a>
 								</h2>
 								<p class="post-description">{post.data.description}</p>
 								<div class="post-footer-meta">
 									<span class="post-author">{post.data.author}</span>
-									<a class="post-read-link" href={`/blog/${post.id.replace(/\.(md|mdx)$/, '')}`}>
-										<span>Read article</span>
+									<a class="post-read-link" href={getPostUrl(post)}>
+										<span>{t.common.readArticle}</span>
 										<span aria-hidden="true">-></span>
 									</a>
 								</div>

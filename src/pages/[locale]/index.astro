@@ -1,0 +1,13 @@
+---
+// Localized route: serves the homepage at /pt-BR, /es and /fr.
+// The page itself is locale-aware (Astro.currentLocale drives the UI strings and
+// post filtering), so re-rendering it here keeps a single implementation.
+import HomePage from '../index.astro';
+import { localeParams } from '../../config/i18n';
+
+export function getStaticPaths() {
+	return localeParams();
+}
+---
+
+<HomePage />

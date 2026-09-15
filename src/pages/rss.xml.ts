@@ -1,9 +1,15 @@
 import rss from '@astrojs/rss';
 import { getCollection } from 'astro:content';
 import { siteConfig } from '../config/site';
+import { defaultLocale } from '../config/i18n';
 
 export async function GET(context) {
-	const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+	// Default locale only: post.id is "<locale>/<slug>" now, so linking with it
+	// produced broken URLs such as /blog/en/<slug>.
+	const allPosts = await getCollection(
+		'blog',
+		({ data }) => !data.draft && data.locale === defaultLocale
+	);
 	const sortedPosts = allPosts.sort(
 		(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
 	);
@@ -15,7 +21,7 @@ export async function GET(context) {
 		items: sortedPosts.map((post) => ({
 			title: post.data.title,
 			description: post.data.description,
-			link: `/blog/${post.id}/`,
+			link: `/blog/${post.data.canonicalSlug}/`,
 			pubDate: post.data.pubDate,
 			author: post.data.author || siteConfig.authorName,
 			categories: post.data.tags,

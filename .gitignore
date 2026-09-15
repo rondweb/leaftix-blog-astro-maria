@@ -13,6 +13,9 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
+# translation run logs (scripts/translate-all.ps1)
+tr-*.log
+
 # environment variables
 .env
 .env.production

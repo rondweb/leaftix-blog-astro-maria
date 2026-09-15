@@ -2,6 +2,11 @@
 import Layout from '../layouts/Layout.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import { siteConfig } from '../config/site';
+import { getLocalePath } from '../config/i18n';
+import type { LocaleCode } from '../config/i18n';
+
+// Keeps the Cookie Policy link inside the locale being rendered.
+const currentLocale: LocaleCode = (Astro.currentLocale as LocaleCode) ?? 'en';
 ---
 
 <Layout
@@ -64,7 +69,7 @@ import { siteConfig } from '../config/site';
 					</p>
 					<p>
 						For a fuller overview of how consent is stored and how optional categories are meant
-						to be used, see the <a href="/cookies">Cookie Policy</a>.
+						to be used, see the <a href={getLocalePath('/cookies', currentLocale)}>Cookie Policy</a>.
 					</p>
 				</section>
 

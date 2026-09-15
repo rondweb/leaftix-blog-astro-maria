@@ -3,8 +3,16 @@ import Layout from '../layouts/Layout.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import { siteConfig } from '../config/site';
 import { getCollection } from 'astro:content';
+import { getUi, getLocalePath } from '../config/i18n';
+import type { LocaleCode } from '../config/i18n';
 
-const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+const currentLocale: LocaleCode = (Astro.currentLocale as LocaleCode) ?? 'en';
+const t = getUi(currentLocale);
+
+// Fetch posts only for the current locale
+const allPosts = await getCollection('blog', ({ data }) => 
+	!data.draft && data.locale === currentLocale
+);
 const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
@@ -19,21 +27,18 @@ const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pu
 
 		<main id="main-content">
 			<section class="hero" id="top">
-				<div class="hero-copy">
-					<h1 class="display-title">The future of sustainable food production is autonomous.</h1>
+							<div class="hero-copy">
+					<h1 class="display-title">{t.index.heroTitle}</h1>
 					<p class="hero-text">
-						Welcome to the Leaftix Blog — where we explore the intersection of artificial
-						intelligence, autonomous governance, and sustainable agriculture. Discover how
-						multi-agent AI, Digital Twins, and edge-native architectures are transforming
-						food production from reactive monitoring to proactive governance.
+						{t.index.heroText}
 					</p>
 					<div class="hero-actions">
-						<a class="hero-btn" href="/blog">
-							<span>Read the Blog</span>
+						<a class="hero-btn" href={getLocalePath('/blog', currentLocale)}>
+							<span>{t.common.readTheBlog}</span>
 							<span aria-hidden="true">-></span>
 						</a>
-						<a class="hero-btn hero-btn-outline" href="/about">
-							<span>About Leaftix</span>
+						<a class="hero-btn hero-btn-outline" href={getLocalePath('/about', currentLocale)}>
+							<span>{t.nav.about}</span>
 							<span aria-hidden="true">-></span>
 						</a>
 					</div>
@@ -55,7 +60,8 @@ const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pu
 						const colors = ['lime', 'cyan', 'lavender', 'mint'];
 						const color = colors[idx % colors.length];
 						const image = post.data.image?.url;
-						const href = `/blog/${post.id.replace(/\.(md|mdx)$/, '')}`;
+						// post.id is "<locale>/<slug>", so build the URL from canonicalSlug.
+						const href = getLocalePath(`/blog/${post.data.canonicalSlug}`, currentLocale);
 
 						return (
 							<a class="project-link" href={href}>

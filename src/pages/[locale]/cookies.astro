@@ -1,0 +1,11 @@
+---
+// Localized route: /pt-BR/cookies, /es/cookies, /fr/cookies.
+import CookiesPage from '../cookies.astro';
+import { localeParams } from '../../config/i18n';
+
+export function getStaticPaths() {
+	return localeParams();
+}
+---
+
+<CookiesPage />

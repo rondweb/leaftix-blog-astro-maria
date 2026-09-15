@@ -3,6 +3,13 @@ import '../styles/global.css';
 import SiteFooter from '../components/SiteFooter.astro';
 import { SEO } from 'astro-seo';
 import { siteConfig } from '../config/site';
+import {
+	defaultLocale,
+	locales as siteLocales,
+	localeMeta,
+	getLocalePath,
+	type LocaleCode,
+} from '../config/i18n';
 
 const {
 	title = siteConfig.title,
@@ -15,8 +22,15 @@ const {
 	schema,
 } = Astro.props;
 
+const currentLocale: LocaleCode = (Astro.currentLocale as LocaleCode) ?? defaultLocale;
+const meta = localeMeta[currentLocale] ?? localeMeta[defaultLocale];
+
 const canonicalUrl = new URL(Astro.url.pathname, siteConfig.siteUrl).toString();
 const ogImageUrl = new URL(ogImage, siteConfig.siteUrl).toString();
+const hreflangUrls = siteLocales.map((locale) => ({
+	locale,
+	href: new URL(getLocalePath(Astro.url.pathname, locale), siteConfig.siteUrl).toString(),
+}));
 const schemaData =
 	schema ??
 	[
@@ -26,7 +40,7 @@ const schemaData =
 			name: siteConfig.name,
 			url: siteConfig.siteUrl,
 			description: siteConfig.description,
-			inLanguage: siteConfig.locale,
+			inLanguage: meta.htmlLang,
 		},
 		{
 			'@context': 'https://schema.org',
@@ -47,19 +61,27 @@ const schemaData =
 				name: siteConfig.name,
 				url: siteConfig.siteUrl,
 			},
-			inLanguage: siteConfig.locale,
+			inLanguage: meta.htmlLang,
 		},
 	];
 ---
 
 <!doctype html>
-<html lang={siteConfig.locale}>
+<html lang={meta.htmlLang}>
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="color-scheme" content="light dark" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
+		{hreflangUrls.map(({ locale, href }) => (
+			<link rel="alternate" hreflang={locale} href={href} />
+		))}
+		<link
+			rel="alternate"
+			hreflang="x-default"
+			href={hreflangUrls.find((entry) => entry.locale === defaultLocale)?.href ?? canonicalUrl}
+		/>
 		<meta name="generator" content={Astro.generator} />
 		<link
 			rel="alternate"
@@ -89,7 +111,7 @@ const schemaData =
 				},
 				optional: {
 					description,
-					locale: siteConfig.locale.replace('-', '_'),
+					locale: meta.ogLocale,
 					siteName: siteConfig.name,
 				},
 				image: {
@@ -488,7 +510,81 @@ const schemaData =
 		transform: translateY(-1px);
 	}
 
-	.shared-theme-toggle-icons {
+.shared-lang {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.15rem;
+		padding: 0.25rem;
+		border: 1px solid var(--control-border);
+		border-radius: 999px;
+	}
+
+	.shared-lang-link {
+		min-width: 2rem;
+		height: 1.75rem;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0 0.4rem;
+		border-radius: 999px;
+		font-size: 0.78rem;
+		font-weight: 700;
+		letter-spacing: 0.02em;
+		color: var(--muted-foreground);
+		text-decoration: none;
+		transition:
+			background-color 120ms ease,
+			color 120ms ease;
+	}
+
+	.shared-lang-link:hover,
+	.shared-lang-link:focus-visible {
+		background: var(--muted);
+		color: var(--foreground);
+	}
+
+	.shared-lang-link.is-current {
+		background: var(--foreground);
+		color: var(--background);
+	}
+
+	.shared-mobile-lang {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 0.4rem;
+		margin-top: 1rem;
+	}
+
+	.shared-mobile-lang-link {
+		min-width: 2.75rem;
+		height: 2.25rem;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.35rem;
+		padding: 0 0.6rem;
+		border: 1px solid var(--control-border);
+		border-radius: 999px;
+		font-size: 0.82rem;
+		font-weight: 700;
+		letter-spacing: 0.02em;
+		color: var(--muted-foreground);
+		text-decoration: none;
+	}
+
+	.shared-mobile-lang-link:hover,
+	.shared-mobile-lang-link:focus-visible {
+		background: var(--muted);
+		color: var(--foreground);
+	}
+
+	.shared-mobile-lang-link.is-current {
+		background: var(--foreground);
+		color: var(--background);
+	}
+
+		.shared-theme-toggle-icons {
 		position: relative;
 		width: 1.2rem;
 		height: 1.2rem;

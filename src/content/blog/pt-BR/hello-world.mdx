@@ -1,0 +1,294 @@
+---
+title: "Olá, Mundo das Folhas!"
+description: "Bem-vindo ao Blog Leaftix, seu portal para explorar a governança autônoma orientada por IA, tecnologia digital Twin e o futuro da produção sustentável de alimentos."
+pubDate: 2026-06-30
+updatedDate: 2026-06-30
+author: 'Ronaldo Andrade'
+locale: "pt-BR"
+canonicalSlug: 'hello-world'
+image:
+  url: 'https://raw.githubusercontent.com/rondweb/cdn-leaftix/refs/heads/main/site/og-image.png'
+  alt: "Blog Leaftix — IA, Governança Autônoma e Produção Alimentar Sustentável"
+tags:
+  - leaftix
+  - welcome
+  - ai
+  - autonomous-governance
+  - digital-twin
+  - sustainable-agriculture
+draft: true
+---
+
+## Bem-vindos ao Blog Leaftix
+
+Este é o primeiro post do nosso novo blog. Estamos felizes por tê-lo aqui. Este post serve como um **visual playground** - um exemplo vivo de tudo que você pode fazer com MDX e Astro no Blog Leaftix.
+
+> *"The future of sustainable food production will not be monitored. It will be governed."*
+> - Leaftix
+
+---
+
+## Formatação de Texto
+
+Você pode escrever parágrafos naturalmente. **Bold text** para ênfase, *italic text* para tom sutil, `inline code` para correções, e `inline code` para termos técnicos como `GaiaOS` ou `Digital Twin`.
+
+Você também pode combiná-los se estiver se sentindo aventureira.
+
+---
+
+## Cabeçalhos
+
+### Este é um H3
+
+Hierarquia importa para legibilidade.
+
+#### Este é um H4
+
+Você pode ir mais fundo quando necessário.
+
+---
+
+## Listas
+
+### Lista Desordenada
+
+- Governação Autónoma
+- Sistemas de IA multi-agente
+- Tecnologia Digital Twin
+- Arquitetura Borda-Nativa
+- Processamento de sensores em tempo real
+- Decisões de baixa latência
+- Operações resilientes
+- Produção Alimentar Sustentável
+
+### Lista Ordenada
+
+1. Instale Leaftix GaiaOS
+2. Configure sensores ambientais
+3. Preparar nós de borda
+4. Modelos de IA multiagentes de trem
+5. Habilitar governança autônoma
+
+---
+
+## Blocos de Código
+
+### JavaScript
+
+```javascript
+// Leaftix GaiaOS — Agent Orchestration Example
+const gaiaOrchestrator = {
+  name: 'Gaia',
+  role: 'Supreme Orchestrator',
+  agents: ['Athena', 'Hermes', 'Hades'],
+
+  async govern(environment) {
+    const data = await this.collect(environment);
+    const decisions = await this.analyze(data);
+    return this.execute(decisions);
+  },
+
+  async collect(environment) {
+    return environment.sensors.map(sensor => sensor.read());
+  },
+
+  async analyze(data) {
+    // Multi-agent consensus algorithm
+    return this.agents.reduce((acc, agent) => ({
+      ...acc,
+      [agent]: agent === 'Athena'
+        ? this.surveillanceStrategy(data)
+        : this.capitalStrategy(data),
+    }), {});
+  },
+};
+```
+
+### Python
+
+```python
+# Digital Twin — Variance Simulation
+import numpy as np
+from dataclasses import dataclass
+
+@dataclass
+class AgriculturalTwin:
+    temperature: float
+    humidity: float
+    soil_moisture: float
+    biomass_yield: float
+
+    def simulate_variance(self) -> dict:
+        """Run Monte Carlo simulation for yield prediction."""
+        simulations = 10_000
+        results = np.random.normal(
+            loc=self.biomass_yield,
+            scale=self.biomass_yield * 0.02,  # < 2% variance
+            size=simulations
+        )
+        return {
+            'mean': np.mean(results),
+            'std': np.std(results),
+            'variance_pct': (np.std(results) / np.mean(results)) * 100
+        }
+
+twin = AgriculturalTwin(24.5, 65.0, 0.42, 340)
+print(twin.simulate_variance())
+# Output: variance_pct ≈ 1.97%
+```
+
+### Bash / Terminal
+
+```bash
+# Deploy Leaftix GaiaOS edge node
+curl -X POST https://api.leaftix.com/v1/nodes/register \
+  -H "Authorization: Bearer $LEAFTIX_API_KEY" \
+  -d '{
+    "type": "edge",
+    "location": "greenhouse-01",
+    "sensors": ["temperature", "humidity", "soil", "light"]
+  }'
+```
+
+---
+
+## Mesas
+
+| Feature | Status | Impact |
+|---|---|---|
+| Autonomous Governance | ✅ Active | 34% energy reduction |
+| Digital Twin | ✅ Active | < 2% variance |
+| Edge Architecture | ✅ Deployed | Real-time decisions |
+| Multi-Agent AI | ✅ Operational | Proactive mitigation |
+| Market Integration | 🚧 In Development | Coming Q3 2026 |
+
+---
+
+## Blockquotes
+
+Uma única linha:
+
+> AI não é o futuro da agricultura. É o presente.
+
+Aninhado blockquote com atribuição:
+
+> A arquitetura tripartida de Leaftix GaiaOS — Olympus, Terra, Hades — permite precisão sem precedentes na governança agrícola.
+> 
+> - **Leaftix Engineering Team**
+> 
+> > Olimpo: Conselho de Soberania
+> Camada de Execução Física
+> > Hades: Mecanismo de Inteligência Material
+
+---
+
+## Links
+
+- Visite [Leaftix.com](https://leaftix.com) para o site principal
+- Verifique nosso [LinkedIn](https://www.linkedin.com/company/leaftix/) para atualizações
+- Envie-nos um e-mail para [info@leaftix.com](mailto:info@leaftix.com)
+- Ligação interna: [About Leaftix](/about)
+
+---
+
+## Regras horizontais
+
+Acima desta linha há um separador. Abaixo desta linha há outra.
+
+---
+
+## Componente MDX personalizado:
+
+import Note from '../../../components/Note.astro';
+
+<Note type="info">
+Este é um **info note** renderizado por um componente Astro personalizado. Você pode usar isso para destacar informações importantes, dicas ou avisos em seus posts.
+</Note>
+
+<Note type="tip">
+**Pro Tip:** MDX permite importar e usar componentes Astro diretamente dentro de sua marcação. Isso significa que você pode construir blocos de UI reutilizáveis para seus posts no blog.
+</Note>
+
+<Note type="warning">
+**Heads up:** Os exemplos neste post são ilustrativos. As métricas de desempenho dependem da sua configuração de implantação específica e condições ambientais.
+</Note>
+
+<Note type="success">
+O Blog Leaftix está ao vivo! Fique ligado para postagens semanais sobre governança de IA, agricultura sustentável e o futuro da produção de alimentos.
+</Note>
+
+---
+
+## JSX (Superpoder MDX)
+
+Você também pode escrever JSX diretamente em MDX:
+
+export const stats = [
+  { metric: 'Energy Reduction', value: '34%' },
+  { metric: 'Digital Twin Variance', value: '< 2%' },
+  { metric: 'Active Sensors', value: '10,000+' },
+  { metric: 'Deployments', value: '12 countries' },
+];
+
+<div style={{
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: '1rem',
+  margin: '1.5rem 0',
+  padding: '1.5rem',
+  border: '1px solid var(--border)',
+  borderRadius: '1rem',
+  background: 'var(--card)',
+}}>
+  {stats.map((stat) => (
+    <div style={{
+      padding: '1rem',
+      textAlign: 'center',
+      border: '1px solid var(--border)',
+      borderRadius: '0.75rem',
+      background: 'var(--muted)',
+    }}>
+      <div style={{
+        fontSize: '2rem',
+        fontWeight: 800,
+        letterSpacing: '-0.04em',
+        color: 'var(--foreground)',
+      }}>
+        {stat.value}
+      </div>
+      <div style={{
+        fontSize: '0.85rem',
+        marginTop: '0.35rem',
+        color: 'var(--muted-foreground)',
+        fontFamily: 'var(--font-mono)',
+        textTransform: 'uppercase',
+        letterSpacing: '0.05em',
+      }}>
+        {stat.metric}
+      </div>
+    </div>
+  ))}
+</div>
+
+---
+
+## Qual é o próximo?
+
+Este post demonstra toda a gama de recursos visuais disponíveis no Blog Leaftix:
+
+- Tradução:
+- Títulos (h2, h3, h4)
+- Listas
+- Blocos de código com realce de sintaxe
+- Mesas com estilo personalizado
+- Blockquotes (solteiro, aninhado, com atribuição)
+- Ligações (internas e externas)
+- Regras horizontais
+- Componentes personalizados do Astro
+- Em linha JSX com renderização de dados
+- Suporte de imagem (via matéria frontal)
+- Tags e metadados
+
+Fique ligado para mais conteúdo sobre **autonomous governance**, **multi-agent AI**, **Digital Twin technology**, e **sustainable food production**.
+
+*Welcome to the future of agriculture. Welcome to Leaftix.*

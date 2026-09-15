@@ -1,19 +1,49 @@
 ---
 import { siteConfig } from '../config/site';
+import {
+	defaultLocale,
+	locales,
+	localeMeta,
+	getLocalePath,
+	getUi,
+	type LocaleCode,
+} from '../config/i18n';
+
+const locale: LocaleCode = (Astro.currentLocale as LocaleCode) ?? defaultLocale;
+const t = getUi(locale);
 const currentPath = Astro.url.pathname || '/';
 const menuPanelId = 'shared-menu-panel';
 const mobileMenuPanelId = 'shared-mobile-menu-panel';
 const mobileSubmenuPanelId = 'shared-mobile-submenu-panel';
+
+const navLinks = [
+	{ href: getLocalePath('/blog', locale), label: t.nav.blog },
+	{ href: getLocalePath('/about', locale), label: t.nav.about },
+];
+
+const extraLinks = [
+	{ href: getLocalePath('/cookies', locale), label: t.nav.cookies },
+	{ href: getLocalePath('/privacy', locale), label: t.nav.privacy },
+	{ href: getLocalePath('/terms', locale), label: t.nav.terms },
+];
+
+const languageLinks = locales.map((code) => ({
+	code,
+	href: getLocalePath(Astro.url.pathname, code),
+	label: localeMeta[code].nativeName,
+	short: localeMeta[code].shortName,
+	isCurrent: code === locale,
+}));
 ---
 
 <header class="shared-header">
-	<a class="shared-brand" href="/" aria-label={`${siteConfig.name} homepage`}>
+	<a class="shared-brand" href={getLocalePath('/', locale)} aria-label={`${siteConfig.name} ${t.nav.homepageAria}`}>
 		<span class="shared-brand-mark">{siteConfig.name}</span>
 	</a>
 
 	<div class="shared-header-actions">
-		<nav class="shared-nav shared-nav-desktop" aria-label="Primary navigation">
-			{siteConfig.navLinks.map((link) => (
+		<nav class="shared-nav shared-nav-desktop" aria-label={t.nav.primaryAria}>
+			{navLinks.map((link) => (
 				<a href={link.href} aria-current={link.href === currentPath ? 'page' : undefined}>
 					{link.label}
 				</a>
@@ -27,11 +57,11 @@ const mobileSubmenuPanelId = 'shared-mobile-submenu-panel';
 					aria-expanded="false"
 					aria-controls={menuPanelId}
 				>
-					<span>Other</span>
+					<span>{t.nav.other}</span>
 					<img src="/icons/chevron-down.svg" alt="" width="16" height="16" />
 				</button>
-				<div class="shared-menu-panel" id={menuPanelId} role="menu" aria-label="More navigation pages">
-					{siteConfig.extraPages.map((link) => (
+				<div class="shared-menu-panel" id={menuPanelId} role="menu" aria-label={t.nav.moreAria}>
+					{extraLinks.map((link) => (
 						<a href={link.href} role="menuitem">
 							{link.label}
 						</a>
@@ -40,11 +70,25 @@ const mobileSubmenuPanelId = 'shared-mobile-submenu-panel';
 			</div>
 		</nav>
 
+		<nav class="shared-lang" aria-label={t.nav.changeLanguage}>
+			{languageLinks.map((lang) => (
+				<a
+					href={lang.href}
+					class:list={['shared-lang-link', lang.isCurrent && 'is-current']}
+					aria-current={lang.isCurrent ? 'true' : undefined}
+					lang={lang.code}
+					title={lang.label}
+				>
+					{lang.short}
+				</a>
+			))}
+		</nav>
+
 		<button
 			class="shared-theme-toggle"
 			type="button"
 			data-theme-toggle
-			aria-label="Switch to dark mode"
+			aria-label={t.nav.themeDark}
 			aria-pressed="false"
 		>
 			<span class="shared-theme-toggle-icons" aria-hidden="true">
@@ -84,7 +128,7 @@ const mobileSubmenuPanelId = 'shared-mobile-submenu-panel';
 		<details class="shared-nav-mobile">
 			<summary
 				class="shared-nav-toggle"
-				aria-label="Toggle navigation menu"
+				aria-label={t.nav.toggleMenu}
 				aria-expanded="false"
 				aria-controls={mobileMenuPanelId}
 			>
@@ -95,12 +139,12 @@ const mobileSubmenuPanelId = 'shared-mobile-submenu-panel';
 				</span>
 			</summary>
 
-			<nav class="shared-mobile-panel" id={mobileMenuPanelId} aria-label="Mobile navigation">
-				<a class="shared-mobile-brand" href="/" aria-label={`${siteConfig.name} homepage`}>
+			<nav class="shared-mobile-panel" id={mobileMenuPanelId} aria-label={t.nav.mobileAria}>
+				<a class="shared-mobile-brand" href={getLocalePath('/', locale)} aria-label={`${siteConfig.name} ${t.nav.homepageAria}`}>
 					{siteConfig.name}
 				</a>
 
-				{siteConfig.navLinks.map((link) => <a href={link.href}>{link.label}</a>)}
+				{navLinks.map((link) => <a href={link.href}>{link.label}</a>)}
 
 				<details class="shared-mobile-submenu">
 					<summary
@@ -108,13 +152,27 @@ const mobileSubmenuPanelId = 'shared-mobile-submenu-panel';
 						aria-expanded="false"
 						aria-controls={mobileSubmenuPanelId}
 					>
-						<span>Other</span>
+						<span>{t.nav.other}</span>
 						<img src="/icons/chevron-down.svg" alt="" width="16" height="16" />
 					</summary>
 					<div class="shared-mobile-submenu-panel" id={mobileSubmenuPanelId}>
-						{siteConfig.extraPages.map((link) => <a href={link.href}>{link.label}</a>)}
+						{extraLinks.map((link) => <a href={link.href}>{link.label}</a>)}
 					</div>
 				</details>
+
+				<div class="shared-mobile-lang" aria-label={t.nav.changeLanguage}>
+					{languageLinks.map((lang) => (
+						<a
+							href={lang.href}
+							class:list={['shared-mobile-lang-link', lang.isCurrent && 'is-current']}
+							aria-current={lang.isCurrent ? 'true' : undefined}
+							lang={lang.code}
+							title={lang.label}
+						>
+							{lang.short}
+						</a>
+					))}
+				</div>
 
 				<div class="shared-mobile-contact" aria-label="Contact links">
 					<a class="shared-mobile-contact-link" href={`mailto:${siteConfig.email}`} aria-label={`Email ${siteConfig.email}`}>

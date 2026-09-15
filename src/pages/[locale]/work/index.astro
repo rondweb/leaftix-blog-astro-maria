@@ -1,0 +1,11 @@
+---
+// Localized route: /pt-BR/work, /es/work, /fr/work.
+import WorkPage from '../../work/index.astro';
+import { localeParams } from '../../../config/i18n';
+
+export function getStaticPaths() {
+	return localeParams();
+}
+---
+
+<WorkPage />
