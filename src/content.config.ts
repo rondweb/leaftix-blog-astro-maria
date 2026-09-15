@@ -6,7 +6,14 @@ export type BlogLocale = (typeof localeCodes)[number];
 
 const blog = defineCollection({
 	// Blog posts are grouped by locale folder: src/content/blog/{en,pt-BR,es,fr}/.
-	loader: glob({ pattern: '**/*.mdx', base: 'src/content/blog' }),
+	loader: glob({
+		pattern: '**/*.mdx',
+		base: 'src/content/blog',
+		// Preserve the locale folder's case in entry IDs. Astro's default generateId
+		// slugifies each path segment with github-slugger, which lowercases
+		// "pt-BR" → "pt-br" and breaks getEntry('blog', '<locale>/<slug>') lookups.
+		generateId: ({ entry }) => entry.replace(/\.(md|mdx)$/, ''),
+	}),
 	schema: z.object({
 		locale: z.enum(localeCodes),
 		title: z.string(),

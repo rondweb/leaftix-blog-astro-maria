@@ -3,7 +3,7 @@
 // Every locale ships the same slugs (canonicalSlug) as the English posts, so the
 // reused page resolves the translated entry via getEntry('blog', '<locale>/<slug>').
 import PostPage from '../../blog/[...slug].astro';
-import { getCollection } from 'astro:content';
+import { getCollection, getEntry } from 'astro:content';
 import { defaultLocale } from '../../../config/i18n';
 
 export async function getStaticPaths() {
@@ -11,6 +11,18 @@ export async function getStaticPaths() {
 		'blog',
 		({ data }) => !data.draft && data.locale !== defaultLocale
 	);
+
+	// Tripwire: the page resolves its post via getEntry('blog', '<locale>/<slug>').
+	// If a content entry ID ever stops matching that key (e.g. the loader
+	// slugifying the "pt-BR" folder to "pt-br"), the page would silently fall
+	// back to the English entry. Fail the build instead.
+	for (const post of translated) {
+		if (!(await getEntry('blog', `${post.data.locale}/${post.data.canonicalSlug}`))) {
+			throw new Error(
+				`Unresolvable blog entry "${post.data.locale}/${post.data.canonicalSlug}" — content entry ID does not match locale/canonicalSlug.`
+			);
+		}
+	}
 
 	return translated.map((post) => ({
 		params: { locale: post.data.locale, slug: post.data.canonicalSlug },
