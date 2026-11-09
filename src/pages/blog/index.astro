@@ -67,12 +67,25 @@ function getPostUrl(post: typeof sortedPosts[0]): string {
 									)}
 								</div>
 								<h2 class="post-title">
-									<a href={getPostUrl(post)}>{post.data.title}</a>
+									<a
+										href={getPostUrl(post)}
+										data-blog-article
+										data-listing-source="blog_index_title"
+										data-locale={post.data.locale}
+										data-post-slug={post.data.canonicalSlug}
+									>{post.data.title}</a>
 								</h2>
 								<p class="post-description">{post.data.description}</p>
 								<div class="post-footer-meta">
 									<span class="post-author">{post.data.author}</span>
-									<a class="post-read-link" href={getPostUrl(post)}>
+									<a
+										class="post-read-link"
+										href={getPostUrl(post)}
+										data-blog-article
+										data-listing-source="blog_index_read_link"
+										data-locale={post.data.locale}
+										data-post-slug={post.data.canonicalSlug}
+									>
 										<span>{t.common.readArticle}</span>
 										<span aria-hidden="true">-></span>
 									</a>
@@ -85,6 +98,23 @@ function getPostUrl(post: typeof sortedPosts[0]): string {
 		</main>
 	</div>
 </Layout>
+
+<script is:inline>
+	document.querySelectorAll('[data-blog-article]').forEach((link) => {
+		link.addEventListener('click', () => {
+			window.posthog?.capture('blog_article_selected', {
+				listing_source: link.dataset.listingSource,
+				locale: link.dataset.locale,
+				post_slug: link.dataset.postSlug,
+			});
+			window.posthogLog?.('info', 'blog article selected from listing', {
+				listing_source: link.dataset.listingSource,
+				locale: link.dataset.locale,
+				post_slug: link.dataset.postSlug,
+			});
+		});
+	});
+</script>
 
 <style>
 	.blog-page {

@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import PostHog from '../components/posthog.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import { SEO } from 'astro-seo';
 import { siteConfig } from '../config/site';
@@ -133,6 +134,7 @@ const schemaData =
 			}}
 		/>
 		<link rel="stylesheet" href="/cookie-consent.css" />
+		<PostHog />
 		<script type="application/ld+json" set:html={JSON.stringify(schemaData)}></script>
 		<script is:inline>
 			(() => {

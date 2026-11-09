@@ -27,7 +27,11 @@ const legalLinks = [
 				<div class="shared-footer-cta">
 					<h2>{t.footer.ctaTitle}</h2>
 					<p>{t.footer.ctaText}</p>
-					<a href={`mailto:${siteConfig.email}`}>{siteConfig.email}</a>
+					<a
+						href={`mailto:${siteConfig.email}`}
+						data-contact-intent
+						data-contact-placement="footer_cta"
+					>{siteConfig.email}</a>
 				</div>
 			)
 		}
@@ -58,3 +62,16 @@ const legalLinks = [
 		</div>
 	</div>
 </footer>
+
+<script is:inline>
+	document.querySelectorAll('[data-contact-placement="footer_cta"]').forEach((link) => {
+		link.addEventListener('click', () => {
+			window.posthog?.capture('contact_intent', {
+				placement: link.dataset.contactPlacement,
+			});
+			window.posthogLog?.('info', 'contact intent selected', {
+				placement: link.dataset.contactPlacement,
+			});
+		});
+	});
+</script>

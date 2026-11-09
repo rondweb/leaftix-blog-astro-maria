@@ -64,7 +64,14 @@ const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pu
 						const href = getLocalePath(`/blog/${post.data.canonicalSlug}`, currentLocale);
 
 						return (
-							<a class="project-link" href={href}>
+							<a
+								class="project-link"
+								href={href}
+								data-blog-article
+								data-listing-source="homepage_latest_posts"
+								data-locale={currentLocale}
+								data-post-slug={post.data.canonicalSlug}
+							>
 								<article class={`project-card ${color}`}>
 									<div class="project-header">
 										<p class="project-name">{post.data.author}</p>
@@ -95,7 +102,7 @@ const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pu
 						sustainable food production. New articles, research insights, and product updates.
 					</p>
 					<div class="cta-actions">
-						<a class="cta-btn" href="mailto:info@leaftix.com">
+						<a class="cta-btn" href="mailto:info@leaftix.com" data-contact-intent data-contact-placement="homepage_cta">
 							<span>Contact us</span>
 							<span aria-hidden="true">-></span>
 						</a>
@@ -105,6 +112,34 @@ const sortedPosts = allPosts.sort((a, b) => b.data.pubDate.valueOf() - a.data.pu
 		</main>
 	</div>
 </Layout>
+
+<script is:inline>
+	document.querySelectorAll('[data-blog-article]').forEach((link) => {
+		link.addEventListener('click', () => {
+			window.posthog?.capture('blog_article_selected', {
+				listing_source: link.dataset.listingSource,
+				locale: link.dataset.locale,
+				post_slug: link.dataset.postSlug,
+			});
+			window.posthogLog?.('info', 'blog article selected from listing', {
+				listing_source: link.dataset.listingSource,
+				locale: link.dataset.locale,
+				post_slug: link.dataset.postSlug,
+			});
+		});
+	});
+
+	document.querySelectorAll('[data-contact-placement="homepage_cta"]').forEach((link) => {
+		link.addEventListener('click', () => {
+			window.posthog?.capture('contact_intent', {
+				placement: link.dataset.contactPlacement,
+			});
+			window.posthogLog?.('info', 'contact intent selected', {
+				placement: link.dataset.contactPlacement,
+			});
+		});
+	});
+</script>
 
 <style>
 	.page {

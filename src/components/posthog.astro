@@ -1,0 +1,86 @@
+<script
+	is:inline
+	define:vars={{
+		apiKey: import.meta.env.PUBLIC_POSTHOG_PROJECT_TOKEN,
+		apiHost: import.meta.env.PUBLIC_POSTHOG_HOST,
+		isDevelopment: import.meta.env.DEV,
+		deploymentEnvironment: import.meta.env.MODE,
+	}}
+>
+	const missingConfiguration = [
+		!apiKey && 'PUBLIC_POSTHOG_PROJECT_TOKEN',
+		!apiHost && 'PUBLIC_POSTHOG_HOST',
+	].filter(Boolean);
+
+	if (missingConfiguration.length > 0) {
+		if (isDevelopment) {
+			console.error(
+				new Error(
+					`${missingConfiguration.join(', ')} variable required by PostHog is missing or un-configured, this causes events to be silently missed. This error stops appearing once ${missingConfiguration.join(', ')} is configured`,
+				),
+			);
+		}
+	} else {
+		// POSTHOG_BROWSER_SNIPPET_START
+		!(function (t, e) {
+			let o;
+			let n;
+			let p;
+			let r;
+			e.__SV ||
+				((window.posthog = e),
+				(e._i = []),
+				(e.init = function (i, s, a) {
+					function g(t, e) {
+						const o = e.split('.');
+						if (o.length === 2) {
+							t = t[o[0]];
+							e = o[1];
+						}
+						t[e] = function () {
+							t.push([e].concat(Array.prototype.slice.call(arguments, 0)));
+						};
+					}
+					p = t.createElement('script');
+					p.type = 'text/javascript';
+					p.crossOrigin = 'anonymous';
+					p.async = true;
+					p.src = s.api_host + '/static/array.js';
+					r = t.getElementsByTagName('script')[0];
+					r.parentNode.insertBefore(p, r);
+					let u = e;
+					if (a !== undefined) u = e[a] = [];
+					else a = 'posthog';
+					u.people = u.people || [];
+					const methods =
+						'capture identify alias people.set people.set_once set_config register register_once unregister opt_out_capturing has_opted_out_capturing opt_in_capturing reset isFeatureEnabled onFeatureFlags getFeatureFlag getFeatureFlagPayload reloadFeatureFlags group updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures getActiveMatchingSurveys getSurveys getNextSurveyStep onSessionId'.split(
+							' ',
+						);
+					for (n = 0; n < methods.length; n++) g(u, methods[n]);
+					e._i.push([i, s, a]);
+				}),
+				(e.__SV = 1));
+		})(document, window.posthog || []);
+		// POSTHOG_BROWSER_SNIPPET_END
+
+		window.posthog.init(apiKey, {
+			api_host: apiHost,
+			logs: {
+				serviceName: 'leaftix-blog-web',
+				environment: deploymentEnvironment,
+			},
+			capture_exceptions: {
+				capture_unhandled_errors: true,
+				capture_unhandled_rejections: true,
+				capture_console_errors: false,
+			},
+		});
+
+		window.posthogLog = (level, message, attributes) => {
+			const logger = window.posthog?.logger;
+			if (logger && typeof logger[level] === 'function') {
+				logger[level](message, attributes);
+			}
+		};
+	}
+</script>
